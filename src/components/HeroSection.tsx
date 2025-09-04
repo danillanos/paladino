@@ -44,7 +44,7 @@ export default function HeroSection() {
           
           {/* Search Form */}
           <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSearch} className="bg-white rounded-lg p-6 shadow-lg">
+            <form onSubmit={handleSearch} className="bg-white rounded-lg p-6 shadow-lg !text-gray-900">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="md:col-span-2">
                                 <input
@@ -52,7 +52,7 @@ export default function HeroSection() {
                 placeholder="Buscar por dirección, zona o características..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent !text-gray-900"
               />
                 </div>
                 
@@ -60,7 +60,7 @@ export default function HeroSection() {
                   <select
                     value={selectedZona}
                     onChange={(e) => setSelectedZona(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent !text-gray-900"
                   >
                     <option value="">Todas las zonas</option>
                     <option value="Centro">Centro</option>
@@ -76,7 +76,7 @@ export default function HeroSection() {
                   <select
                     value={selectedTipo}
                     onChange={(e) => setSelectedTipo(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent !text-gray-900"
                   >
                     <option value="">Todos los tipos</option>
                     <option value="Departamento">Departamento</option>
