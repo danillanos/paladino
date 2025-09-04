@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: [],
   images: {
     remotePatterns: [
       {
@@ -12,11 +11,21 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'paladinopropiedades.com.ar',
         port: '',
         pathname: '/**',
       },
     ],
+  },
+  experimental: {
+    // Disable problematic features that might cause the routesManifest error
+    serverComponentsExternalPackages: [],
   },
 };
 

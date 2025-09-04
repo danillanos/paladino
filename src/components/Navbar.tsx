@@ -50,7 +50,7 @@ export default function Navbar() {
           </div>
 
           {/* Search Bar */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 ml-2.5">
             <form onSubmit={handleSearch} className="flex">
               <input
                 type="text"
