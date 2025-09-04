@@ -39,7 +39,7 @@ export default function HeroSection() {
             Encuentra tu hogar ideal
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            Descubre las mejores propiedades en las zonas más exclusivas de Buenos Aires
+            Descubre las mejores propiedades en las zonas más exclusivas de Villa Carlos Paz
           </p>
           
           {/* Search Form */}
@@ -63,11 +63,12 @@ export default function HeroSection() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
                   >
                     <option value="">Todas las zonas</option>
-                    <option value="Palermo">Palermo</option>
-                    <option value="Recoleta">Recoleta</option>
-                    <option value="Belgrano">Belgrano</option>
-                    <option value="Villa Crespo">Villa Crespo</option>
-                    <option value="Caballito">Caballito</option>
+                    <option value="Centro">Centro</option>
+                    <option value="Villa del Lago">Villa del Lago</option>
+                    <option value="San Antonio">San Antonio</option>
+                    <option value="La Calera">La Calera</option>
+                    <option value="Cuesta Blanca">Cuesta Blanca</option>
+                    <option value="Tanti">Tanti</option>
                   </select>
                 </div>
                 
@@ -80,9 +81,9 @@ export default function HeroSection() {
                     <option value="">Todos los tipos</option>
                     <option value="Departamento">Departamento</option>
                     <option value="Casa">Casa</option>
-                    <option value="PH">PH</option>
-                    <option value="Oficina">Oficina</option>
-                    <option value="Local">Local</option>
+                    <option value="Casaquinta">Casaquinta</option>
+                    <option value="Casa Quinta">Casa Quinta</option>
+                    <option value="Terreno">Terreno</option>
                   </select>
                 </div>
               </div>
@@ -101,15 +102,15 @@ export default function HeroSection() {
           {/* Stats */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold mb-2">500+</div>
+              <div className="text-3xl font-bold mb-2">200+</div>
               <div className="text-lg">Propiedades</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold mb-2">50+</div>
+              <div className="text-3xl font-bold mb-2">15+</div>
               <div className="text-lg">Zonas</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold mb-2">1000+</div>
+              <div className="text-3xl font-bold mb-2">500+</div>
               <div className="text-lg">Clientes Satisfechos</div>
             </div>
           </div>

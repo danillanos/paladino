@@ -1,14 +1,16 @@
 import HeroSection from '@/components/HeroSection';
 import FeaturedProperties from '@/components/FeaturedProperties';
+import FeaturedLocations from '@/components/FeaturedLocations';
 
 export default function HomePage() {
   return (
     <div>
       <HeroSection />
       <FeaturedProperties />
+      <FeaturedLocations />
       
       {/* About Section */}
-      <section className="py-16 bg-white">
+     {/*  <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-6">
@@ -59,10 +61,10 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       
       {/* CTA Section */}
-      <section className="py-16 bg-green-600 text-white">
+{/*       <section className="py-16 bg-green-600 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">
             ¿Listo para encontrar tu hogar ideal?
@@ -86,7 +88,7 @@ export default function HomePage() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
