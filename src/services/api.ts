@@ -1,4 +1,4 @@
-import { Inmueble, Destacado, Zona, Estado, ApiResponse } from '@/types';
+import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento } from '@/types';
 
 // API configuration - you can change this to your actual API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://paladinopropiedades.com.ar';
@@ -230,6 +230,93 @@ export class ApiService {
     } catch (error) {
       console.error('Error fetching estados:', error);
       return [];
+    }
+  }
+
+  static async getSiteConfiguration(): Promise<SiteConfiguration | null> {
+    try {
+      // Use the specific API endpoint for site configuration
+      const response = await globalThis.fetch('https://api.paladinopropiedades.com.ar/configuracion-sitio', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(10000), // 10 second timeout
+      });
+
+      if (!response.ok) {
+        const errorMessage = `Site configuration API not available (${response.status})`;
+        console.warn(errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('Successfully fetched site configuration');
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          console.error('Request timeout for site configuration');
+        } else if (error.message.includes('Failed to fetch')) {
+          console.error('Network error or CORS issue for site configuration');
+        } else {
+          console.error('Error fetching site configuration:', error.message);
+        }
+      } else {
+        console.error('Unknown error fetching site configuration:', error);
+      }
+      
+      // Return null if configuration cannot be fetched
+      console.log('Falling back to default site configuration...');
+      return null;
+    }
+  }
+
+  static async getEmprendimientos(): Promise<Emprendimiento[]> {
+    try {
+      // Use the specific API endpoint for emprendimientos
+      const response = await globalThis.fetch('https://api.paladinopropiedades.com.ar/emprendimientos', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(10000), // 10 second timeout
+      });
+
+      if (!response.ok) {
+        const errorMessage = `Emprendimientos API not available (${response.status})`;
+        console.warn(errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('Successfully fetched emprendimientos');
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          console.error('Request timeout for emprendimientos');
+        } else if (error.message.includes('Failed to fetch')) {
+          console.error('Network error or CORS issue for emprendimientos');
+        } else {
+          console.error('Error fetching emprendimientos:', error.message);
+        }
+      } else {
+        console.error('Unknown error fetching emprendimientos:', error);
+      }
+      
+      // Return empty array if emprendimientos cannot be fetched
+      console.log('Falling back to empty emprendimientos list...');
+      return [];
+    }
+  }
+
+  static async getEmprendimientoBySlug(slug: string): Promise<Emprendimiento | null> {
+    try {
+      const emprendimientos = await ApiService.getEmprendimientos();
+      const emprendimiento = emprendimientos.find(emp => emp.slug === slug);
+      return emprendimiento || null;
+    } catch (error) {
+      console.error(`Error fetching emprendimiento with slug ${slug}:`, error);
+      return null;
     }
   }
 

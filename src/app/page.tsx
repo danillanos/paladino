@@ -1,13 +1,15 @@
 import HeroSection from '@/components/HeroSection';
 import FeaturedProperties from '@/components/FeaturedProperties';
-import FeaturedLocations from '@/components/FeaturedLocations';
+import FeaturedEmprendimientos from '@/components/FeaturedEmprendimientos';
+// import FeaturedLocations from '@/components/FeaturedLocations';
 
 export default function HomePage() {
   return (
     <div>
       <HeroSection />
+      <FeaturedEmprendimientos />
       <FeaturedProperties />
-      <FeaturedLocations />
+      {/* <FeaturedLocations /> */}
       
       {/* About Section */}
      {/*  <section className="py-16 bg-white">

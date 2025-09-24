@@ -7,6 +7,7 @@ export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedZona, setSelectedZona] = useState('');
   const [selectedTipo, setSelectedTipo] = useState('');
+  const [selectedOperacion, setSelectedOperacion] = useState('comprar');
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -21,6 +22,9 @@ export default function HeroSection() {
     }
     if (selectedTipo) {
       params.append('tipo', selectedTipo);
+    }
+    if (selectedOperacion) {
+      params.append('operacion', selectedOperacion);
     }
 
     const queryString = params.toString();
@@ -42,76 +46,120 @@ export default function HeroSection() {
             Descubre las mejores propiedades en las zonas más exclusivas de Villa Carlos Paz
           </p>
           
-          {/* Search Form */}
-          <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSearch} className="bg-white rounded-lg p-6 shadow-lg !text-gray-900">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="md:col-span-2">
-                                <input
-                type="text"
-                placeholder="Buscar por dirección, zona o características..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent !text-gray-900"
-              />
-                </div>
-                
-                <div>
-                  <select
-                    value={selectedZona}
-                    onChange={(e) => setSelectedZona(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent !text-gray-900"
-                  >
-                    <option value="">Todas las zonas</option>
-                    <option value="Centro">Centro</option>
-                    <option value="Villa del Lago">Villa del Lago</option>
-                    <option value="San Antonio">San Antonio</option>
-                    <option value="La Calera">La Calera</option>
-                    <option value="Cuesta Blanca">Cuesta Blanca</option>
-                    <option value="Tanti">Tanti</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <select
-                    value={selectedTipo}
-                    onChange={(e) => setSelectedTipo(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent !text-gray-900"
-                  >
-                    <option value="">Todos los tipos</option>
-                    <option value="Departamento">Departamento</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Casaquinta">Casaquinta</option>
-                    <option value="Casa Quinta">Casa Quinta</option>
-                    <option value="Terreno">Terreno</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div className="mt-4">
+          {/* RE/MAX Style Search Form */}
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+              {/* Operation Type Tabs */}
+              <div className="flex border-b border-gray-200">
                 <button
-                  type="submit"
-                  className="w-full bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors font-semibold text-lg"
+                  type="button"
+                  onClick={() => setSelectedOperacion('comprar')}
+                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                    selectedOperacion === 'comprar'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
-                  Buscar Propiedades
+                  Quiero comprar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOperacion('alquilar')}
+                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                    selectedOperacion === 'alquilar'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  Quiero alquilar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOperacion('vender')}
+                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                    selectedOperacion === 'vender'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  Quiero vender
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOperacion('emprendimientos')}
+                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                    selectedOperacion === 'emprendimientos'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  Emprendimientos
                 </button>
               </div>
-            </form>
-          </div>
-          
-          {/* Stats */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">200+</div>
-              <div className="text-lg">Propiedades</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">15+</div>
-              <div className="text-lg">Zonas</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">500+</div>
-              <div className="text-lg">Clientes Satisfechos</div>
+
+              {/* Search Form */}
+              <form onSubmit={handleSearch} className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Search Input */}
+                  <div className="lg:col-span-2">
+                    <input
+                      type="text"
+                      placeholder="¿Dónde querés mudarte?"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                    />
+                  </div>
+                  
+                  {/* Property Type */}
+                  <div>
+                    <select
+                      value={selectedTipo}
+                      onChange={(e) => setSelectedTipo(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                    >
+                      <option value="">Tipo de propiedad</option>
+                      <option value="Departamento">Departamento</option>
+                      <option value="Casa">Casa</option>
+                      <option value="Casaquinta">Casaquinta</option>
+                      <option value="Casa Quinta">Casa Quinta</option>
+                      <option value="Terreno">Terreno</option>
+                      <option value="Monoambiente">Monoambiente</option>
+                    </select>
+                  </div>
+                  
+                  {/* Location */}
+                  <div>
+                    <select
+                      value={selectedZona}
+                      onChange={(e) => setSelectedZona(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                    >
+                      <option value="">Ubicación</option>
+                      <option value="Centro">Centro</option>
+                      <option value="Villa del Lago">Villa del Lago</option>
+                      <option value="San Antonio">San Antonio</option>
+                      <option value="La Calera">La Calera</option>
+                      <option value="Cuesta Blanca">Cuesta Blanca</option>
+                      <option value="Tanti">Tanti</option>
+                      <option value="Costa Azul">Costa Azul</option>
+                    </select>
+                  </div>
+                </div>
+                
+                {/* Search Button */}
+                <div className="mt-6">
+                  <button
+                    type="submit"
+                    className="w-full bg-green-600 text-white py-4 px-8 rounded-md hover:bg-green-700 transition-colors font-semibold text-lg shadow-lg"
+                  >
+                    {selectedOperacion === 'comprar' && 'Quiero comprar'}
+                    {selectedOperacion === 'alquilar' && 'Quiero alquilar'}
+                    {selectedOperacion === 'vender' && 'Quiero vender'}
+                    {selectedOperacion === 'emprendimientos' && 'Ver emprendimientos'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

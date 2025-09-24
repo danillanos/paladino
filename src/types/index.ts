@@ -87,4 +87,149 @@ export interface ApiResponse<T> {
       total: number;
     };
   };
+}
+
+// Site Configuration Types
+export interface Contacto {
+  id: number;
+  nombre: string;
+  telefono: string;
+  email: string;
+  observaciones: string;
+  whatsapp: string;
+  whatsapp_mensaje: string;
+  whatsapp_url: string | null;
+}
+
+export interface Ubicacion {
+  id: number;
+  direccion: string;
+  localidad: string;
+  piso: string | null;
+  latitud: number;
+  longitud: number;
+  orientacion: string | null;
+  zoom: number;
+}
+
+export interface HeroImagen {
+  id: number;
+  name: string;
+  alternativeText: string;
+  caption: string;
+  width: number;
+  height: number;
+  formats: {
+    thumbnail: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+  };
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: any;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SiteConfiguration {
+  id: number;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+  hero_titulo: string;
+  hero_subtitulo: string;
+  hero_opacidad: number;
+  ubicacion: Ubicacion;
+  contactos: Contacto[];
+  hero_imagen: HeroImagen[];
+}
+
+// Emprendimientos Types
+export interface EmprendimientoImagen {
+  id: number;
+  name: string;
+  alternativeText: string;
+  caption: string;
+  width: number;
+  height: number;
+  formats: any;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: any;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EmprendimientoAmenities {
+  __component: string;
+  id: number;
+  pileta: boolean | null;
+  parrilla: boolean | null;
+  solarium: boolean | null;
+  gimnasio: boolean | null;
+  laundry: boolean | null;
+  sum: boolean | null;
+  terraza: boolean | null;
+  balcon: boolean | null;
+  seguridad: boolean | null;
+  ascensor: boolean | null;
+  expensas_incluidas: boolean | null;
+}
+
+export interface EmprendimientoDescripcion {
+  __component: string;
+  id: number;
+  contenido: string;
+}
+
+export interface EmprendimientoPrecio {
+  __component: string;
+  id: number;
+  moneda: string | null;
+  precio_desde: number | null;
+  texto: string;
+}
+
+export interface EmprendimientoUbicacion {
+  id: number;
+  direccion: string;
+  localidad: string;
+  piso: string | null;
+  latitud: number;
+  longitud: number;
+  orientacion: string | null;
+  zoom: number;
+}
+
+export interface Emprendimiento {
+  id: number;
+  nombre: string;
+  slug: string;
+  resumen: string | null;
+  estado: string;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+  ubicacion_avanzada: EmprendimientoUbicacion;
+  secciones: (EmprendimientoDescripcion | EmprendimientoAmenities | EmprendimientoPrecio)[];
+  cover: EmprendimientoImagen;
+  galeria: EmprendimientoImagen[];
 } 

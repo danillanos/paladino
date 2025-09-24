@@ -41,9 +41,9 @@ export default function Navbar() {
             <Link href="/inmuebles" className="text-gray-700 hover:text-green-600 transition-colors">
               Propiedades
             </Link>
-            <Link href="/zonas" className="text-gray-700 hover:text-green-600 transition-colors">
+            {/* <Link href="/zonas" className="text-gray-700 hover:text-green-600 transition-colors">
               Zonas
-            </Link>
+            </Link> */}
             <Link href="/contacto" className="text-gray-700 hover:text-green-600 transition-colors">
               Contacto
             </Link>
@@ -103,13 +103,13 @@ export default function Navbar() {
               >
                 Propiedades
               </Link>
-              <Link
+              {/* <Link
                 href="/zonas"
                 className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Zonas
-              </Link>
+              </Link> */}
               <Link
                 href="/contacto"
                 className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors"

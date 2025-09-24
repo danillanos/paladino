@@ -56,11 +56,11 @@ export default function Footer() {
                   Propiedades
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/zonas" className="text-gray-300 hover:text-white transition-colors">
                   Zonas
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/contacto" className="text-gray-300 hover:text-white transition-colors">
                   Contacto
