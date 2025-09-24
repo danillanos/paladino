@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ApiService } from '@/services/api';
 import { Emprendimiento } from '@/types';
 
@@ -102,13 +103,13 @@ export default function FeaturedEmprendimientos() {
                 <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden">
-                    <img
+                    <Image
                       src={imageUrl}
                       alt={emprendimiento.nombre}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={() => {
                         console.log('Image failed to load:', imageUrl);
-                        e.currentTarget.src = '/placeholder-property.jpg';
                       }}
                     />
                   

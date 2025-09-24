@@ -139,7 +139,7 @@ export interface HeroImagen {
   url: string;
   previewUrl: string | null;
   provider: string;
-  provider_metadata: any;
+  provider_metadata: unknown;
   created_at: string;
   updated_at: string;
 }
@@ -165,7 +165,19 @@ export interface EmprendimientoImagen {
   caption: string;
   width: number;
   height: number;
-  formats: any;
+  formats: {
+    thumbnail?: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+  };
   hash: string;
   ext: string;
   mime: string;
@@ -173,7 +185,7 @@ export interface EmprendimientoImagen {
   url: string;
   previewUrl: string | null;
   provider: string;
-  provider_metadata: any;
+  provider_metadata: unknown;
   created_at: string;
   updated_at: string;
 }

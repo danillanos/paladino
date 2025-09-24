@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Destacado } from '@/types';
 import { ApiService } from '@/services/api';
-import PropertyCard from './PropertyCard';
 import LoadingSpinner from './ui/LoadingSpinner';
 
 export default function FeaturedProperties() {
