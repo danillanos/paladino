@@ -102,7 +102,7 @@ export default function FeaturedEmprendimientos() {
               >
                 <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                   {/* Image */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-[22rem] overflow-hidden">
                     <Image
                       src={imageUrl}
                       alt={emprendimiento.nombre}
@@ -114,8 +114,8 @@ export default function FeaturedEmprendimientos() {
                     />
                   
                     {/* Overlay with title */}
-                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
-                      <div className="p-6 w-full">
+                    <div className="absolute inset-0 flex items-end">
+                      <div className="p-6 w-full bg-gradient-to-t from-black/70 to-transparent">
                         <h3 className="text-white text-xl font-semibold mb-2">
                           {emprendimiento.nombre}
                         </h3>
