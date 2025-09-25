@@ -6,7 +6,9 @@ export interface Inmueble {
   precio_inmueble: number | null;
   moneda: string | null;
   tipo: string | null;
-  estado: string | null;
+  estado: {
+    nombre: string;
+  } | null;
   zona: string | null;
   habitaciones: number | null;
   banos: number | null;
@@ -38,7 +40,9 @@ export interface Inmueble {
   moneda_ref: string | null;
   inmueble: string | null;
   portada_ref: string | null;
-  catalogo_de_zona: string | null;
+  catalogo_de_zona: {
+    nombre: string;
+  } | null;
   servicios: string | null;
   amenities: string | null;
   comodidades_internas: string | null;
@@ -49,8 +53,12 @@ export interface Inmueble {
   contacto: string | null;
   galeria_destacada: unknown[];
   precio_ref: string | null;
-  ubicacion_avanzada: string | null;
-  imagen: string | null;
+  ubicacion_avanzada: {
+    localidad: string;
+  } | null;
+  imagen: {
+    url: string;
+  } | null;
 }
 
 export interface Destacado {
