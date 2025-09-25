@@ -337,7 +337,7 @@ export class ApiService {
         precio_inmueble: 85000,
         moneda: 'USD',
         tipo: 'Departamento',
-        estado: 'Usado',
+        estado: { nombre: 'Usado' },
         zona: 'Centro',
         habitaciones: 2,
         banos: 1,
@@ -368,7 +368,7 @@ export class ApiService {
         moneda_ref: 'USD',
         inmueble: null,
         portada_ref: null,
-        catalogo_de_zona: 'Centro',
+        catalogo_de_zona: { nombre: 'Centro' },
         servicios: null,
         amenities: null,
         comodidades_internas: null,
@@ -380,7 +380,7 @@ export class ApiService {
         galeria_destacada: [],
         precio_ref: '85000',
         ubicacion_avanzada: null,
-        imagen: 'https://picsum.photos/400/300?random=1'
+        imagen: { url: 'https://picsum.photos/400/300?random=1' }
       },
       {
         id: 2,
@@ -390,7 +390,7 @@ export class ApiService {
         precio_inmueble: 180000,
         moneda: 'USD',
         tipo: 'Casa',
-        estado: 'Nuevo',
+        estado: { nombre: 'Nuevo' },
         zona: 'Villa del Lago',
         habitaciones: 3,
         banos: 2,
@@ -421,7 +421,7 @@ export class ApiService {
         moneda_ref: 'USD',
         inmueble: null,
         portada_ref: null,
-        catalogo_de_zona: 'Villa del Lago',
+        catalogo_de_zona: { nombre: 'Villa del Lago' },
         servicios: null,
         amenities: null,
         comodidades_internas: null,
@@ -433,7 +433,7 @@ export class ApiService {
         galeria_destacada: [],
         precio_ref: '180000',
         ubicacion_avanzada: null,
-        imagen: 'https://picsum.photos/400/300?random=2'
+        imagen: { url: 'https://picsum.photos/400/300?random=2' }
       },
       {
         id: 3,
@@ -443,7 +443,7 @@ export class ApiService {
         precio_inmueble: 120000,
         moneda: 'USD',
         tipo: 'Casaquinta',
-        estado: 'Usado',
+        estado: { nombre: 'Usado' },
         zona: 'San Antonio',
         habitaciones: 1,
         banos: 1,
@@ -474,7 +474,7 @@ export class ApiService {
         moneda_ref: 'USD',
         inmueble: null,
         portada_ref: null,
-        catalogo_de_zona: 'San Antonio',
+        catalogo_de_zona: { nombre: 'San Antonio' },
         servicios: null,
         amenities: null,
         comodidades_internas: null,
@@ -486,7 +486,7 @@ export class ApiService {
         galeria_destacada: [],
         precio_ref: '120000',
         ubicacion_avanzada: null,
-        imagen: 'https://picsum.photos/400/300?random=3'
+        imagen: { url: 'https://picsum.photos/400/300?random=3' }
       },
       {
         id: 4,
@@ -496,7 +496,7 @@ export class ApiService {
         precio_inmueble: 220000,
         moneda: 'USD',
         tipo: 'Departamento',
-        estado: 'Nuevo',
+        estado: { nombre: 'Nuevo' },
         zona: 'La Calera',
         habitaciones: 4,
         banos: 3,
@@ -527,7 +527,7 @@ export class ApiService {
         moneda_ref: 'USD',
         inmueble: null,
         portada_ref: null,
-        catalogo_de_zona: 'La Calera',
+        catalogo_de_zona: { nombre: 'La Calera' },
         servicios: null,
         amenities: null,
         comodidades_internas: null,
@@ -539,7 +539,7 @@ export class ApiService {
         galeria_destacada: [],
         precio_ref: '220000',
         ubicacion_avanzada: null,
-        imagen: 'https://picsum.photos/400/300?random=4'
+        imagen: { url: 'https://picsum.photos/400/300?random=4' }
       },
       {
         id: 5,
@@ -549,7 +549,7 @@ export class ApiService {
         precio_inmueble: 350000,
         moneda: 'USD',
         tipo: 'Casa Quinta',
-        estado: 'Usado',
+        estado: { nombre: 'Usado' },
         zona: 'Cuesta Blanca',
         habitaciones: 5,
         banos: 4,
@@ -580,7 +580,7 @@ export class ApiService {
         moneda_ref: 'USD',
         inmueble: null,
         portada_ref: null,
-        catalogo_de_zona: 'Cuesta Blanca',
+        catalogo_de_zona: { nombre: 'Cuesta Blanca' },
         servicios: null,
         amenities: null,
         comodidades_internas: null,
@@ -592,7 +592,7 @@ export class ApiService {
         galeria_destacada: [],
         precio_ref: '350000',
         ubicacion_avanzada: null,
-        imagen: 'https://picsum.photos/400/300?random=5'
+        imagen: { url: 'https://picsum.photos/400/300?random=5' }
       },
       {
         id: 6,
@@ -602,7 +602,7 @@ export class ApiService {
         precio_inmueble: 65000,
         moneda: 'USD',
         tipo: 'Monoambiente',
-        estado: 'Nuevo',
+        estado: { nombre: 'Nuevo' },
         zona: 'Costa Azul',
         habitaciones: 0,
         banos: 1,
@@ -633,7 +633,7 @@ export class ApiService {
         moneda_ref: 'USD',
         inmueble: null,
         portada_ref: null,
-        catalogo_de_zona: 'Costa Azul',
+        catalogo_de_zona: { nombre: 'Costa Azul' },
         servicios: null,
         amenities: null,
         comodidades_internas: null,
@@ -645,7 +645,7 @@ export class ApiService {
         galeria_destacada: [],
         precio_ref: '65000',
         ubicacion_avanzada: null,
-        imagen: 'https://picsum.photos/400/300?random=6'
+        imagen: { url: 'https://picsum.photos/400/300?random=6' }
       }
     ];
 
@@ -660,7 +660,7 @@ export class ApiService {
 
     if (params?.estado) {
       filteredInmuebles = filteredInmuebles.filter(inmueble => 
-        inmueble.estado?.toLowerCase().includes(params.estado!.toLowerCase()) ?? false
+        inmueble.estado?.nombre?.toLowerCase().includes(params.estado!.toLowerCase()) ?? false
       );
     }
 

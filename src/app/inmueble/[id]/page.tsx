@@ -173,7 +173,7 @@ export default function InmuebleDetailPage() {
                 <div className="text-sm text-gray-600">m²</div>
               </div>
               <div className="text-center p-4 bg-gray-50 rounded-lg">
-                <div className="text-2xl font-bold text-gray-800">{inmueble.estado}</div>
+                <div className="text-2xl font-bold text-gray-800">{inmueble.estado?.nombre || 'N/A'}</div>
                 <div className="text-sm text-gray-600">Estado</div>
               </div>
             </div>
@@ -197,7 +197,7 @@ export default function InmuebleDetailPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Estado:</span>
-                    <span className="font-medium">{inmueble.estado}</span>
+                    <span className="font-medium">{inmueble.estado?.nombre || 'N/A'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Zona:</span>

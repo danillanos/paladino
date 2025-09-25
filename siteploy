@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+echo "🚀 Iniciando despliegue de Paladino Propiedades..."
+
+echo "📥 Actualizando código desde el repositorio..."
+git pull
+
+echo "📦 Instalando dependencias de producción..."
+npm ci --omit=dev
+
+echo "🔨 Construyendo la aplicación..."
+npm run build
+
+echo "🔄 Recargando aplicación con PM2..."
+pm2 reload paladino
+
+echo "✅ Despliegue completado exitosamente!"
+echo "🌐 La aplicación está disponible en: http://localhost:3000"

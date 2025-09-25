@@ -29,10 +29,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    // Disable problematic features that might cause the routesManifest error
-    serverComponentsExternalPackages: [],
-  },
+  serverExternalPackages: [],
 };
 
 export default nextConfig;
