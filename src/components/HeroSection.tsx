@@ -32,74 +32,78 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[600px] bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://static.wixstatic.com/media/766cf0_8996761e261444b79e8857de3fb84e51~mv2.jpg/v1/fill/w_1960,h_754,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/766cf0_8996761e261444b79e8857de3fb84e51~mv2.jpg)' }}>
+    <section className="relative min-h-[500px] md:h-[600px] bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://static.wixstatic.com/media/766cf0_8996761e261444b79e8857de3fb84e51~mv2.jpg/v1/fill/w_1960,h_754,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/766cf0_8996761e261444b79e8857de3fb84e51~mv2.jpg)' }}>
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       
       {/* Content */}
-      <div className="relative z-10 flex items-center justify-center h-full">
-        <div className="text-center text-white px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+      <div className="relative z-10 flex items-center justify-center h-full py-8">
+        <div className="text-center text-white px-4 w-full">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 md:mb-6">
             Encuentra tu hogar ideal
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">
             Descubre las mejores propiedades en las zonas más exclusivas de Villa Carlos Paz
           </p>
           
           {/* RE/MAX Style Search Form */}
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-5xl mx-auto px-2">
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
               {/* Operation Type Tabs */}
-              <div className="flex border-b border-gray-200">
+              <div className="flex flex-wrap border-b border-gray-200">
                 <button
                   type="button"
                   onClick={() => setSelectedOperacion('comprar')}
-                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                  className={`flex-1 min-w-[50%] py-3 md:py-4 px-2 md:px-6 text-center font-semibold transition-colors text-sm md:text-base ${
                     selectedOperacion === 'comprar'
                       ? 'bg-green-600 text-white'
                       : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  Quiero comprar
+                  <span className="hidden sm:inline">Quiero comprar</span>
+                  <span className="sm:hidden">Comprar</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedOperacion('alquilar')}
-                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                  className={`flex-1 min-w-[50%] py-3 md:py-4 px-2 md:px-6 text-center font-semibold transition-colors text-sm md:text-base ${
                     selectedOperacion === 'alquilar'
                       ? 'bg-green-600 text-white'
                       : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  Quiero alquilar
+                  <span className="hidden sm:inline">Quiero alquilar</span>
+                  <span className="sm:hidden">Alquilar</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedOperacion('vender')}
-                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                  className={`flex-1 min-w-[50%] py-3 md:py-4 px-2 md:px-6 text-center font-semibold transition-colors text-sm md:text-base ${
                     selectedOperacion === 'vender'
                       ? 'bg-green-600 text-white'
                       : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  Quiero vender
+                  <span className="hidden sm:inline">Quiero vender</span>
+                  <span className="sm:hidden">Vender</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedOperacion('emprendimientos')}
-                  className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
+                  className={`flex-1 min-w-[50%] py-3 md:py-4 px-2 md:px-6 text-center font-semibold transition-colors text-sm md:text-base ${
                     selectedOperacion === 'emprendimientos'
                       ? 'bg-green-600 text-white'
                       : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  Emprendimientos
+                  <span className="hidden sm:inline">Emprendimientos</span>
+                  <span className="sm:hidden">Proyectos</span>
                 </button>
               </div>
 
               {/* Search Form */}
-              <form onSubmit={handleSearch} className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <form onSubmit={handleSearch} className="p-4 md:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                   {/* Search Input */}
                   <div className="lg:col-span-2">
                     <input
@@ -107,7 +111,7 @@ export default function HeroSection() {
                       placeholder="¿Dónde querés mudarte?"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900 text-sm md:text-base"
                     />
                   </div>
                   
@@ -116,7 +120,7 @@ export default function HeroSection() {
                     <select
                       value={selectedTipo}
                       onChange={(e) => setSelectedTipo(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900 text-sm md:text-base"
                     >
                       <option value="">Tipo de propiedad</option>
                       <option value="Departamento">Departamento</option>
@@ -133,7 +137,7 @@ export default function HeroSection() {
                     <select
                       value={selectedZona}
                       onChange={(e) => setSelectedZona(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900 text-sm md:text-base"
                     >
                       <option value="">Ubicación</option>
                       <option value="Centro">Centro</option>
@@ -148,10 +152,10 @@ export default function HeroSection() {
                 </div>
                 
                 {/* Search Button */}
-                <div className="mt-6">
+                <div className="mt-4 md:mt-6">
                   <button
                     type="submit"
-                    className="w-full bg-green-600 text-white py-4 px-8 rounded-md hover:bg-green-700 transition-colors font-semibold text-lg shadow-lg"
+                    className="w-full bg-green-600 text-white py-3 md:py-4 px-6 md:px-8 rounded-md hover:bg-green-700 transition-colors font-semibold text-base md:text-lg shadow-lg"
                   >
                     {selectedOperacion === 'comprar' && 'Quiero comprar'}
                     {selectedOperacion === 'alquilar' && 'Quiero alquilar'}
