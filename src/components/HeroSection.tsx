@@ -40,7 +40,7 @@ export default function HeroSection() {
       <div className="relative z-10 flex items-center justify-center h-full py-8">
         <div className="text-center text-white px-4 w-full">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 md:mb-6">
-            Encuentra tu hogar ideal
+            Invertí en Villa Carlos Paz
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">
             Descubre las mejores propiedades en las zonas más exclusivas de Villa Carlos Paz
@@ -103,12 +103,12 @@ export default function HeroSection() {
 
               {/* Search Form */}
               <form onSubmit={handleSearch} className="p-4 md:p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {/* Search Input */}
                   <div className="lg:col-span-2">
                     <input
                       type="text"
-                      placeholder="¿Dónde querés mudarte?"
+                      placeholder="¿Qué buscas?"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900 text-sm md:text-base"
@@ -132,8 +132,8 @@ export default function HeroSection() {
                     </select>
                   </div>
                   
-                  {/* Location */}
-                  <div>
+                  {/* Location - Hidden */}
+                  {/* <div>
                     <select
                       value={selectedZona}
                       onChange={(e) => setSelectedZona(e.target.value)}
@@ -148,7 +148,7 @@ export default function HeroSection() {
                       <option value="Tanti">Tanti</option>
                       <option value="Costa Azul">Costa Azul</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
                 
                 {/* Search Button */}

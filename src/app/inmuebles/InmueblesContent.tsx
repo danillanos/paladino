@@ -91,9 +91,9 @@ export default function InmueblesPageContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">Propiedades</h1>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">Propiedades</h1>
           <LoadingSpinner />
         </div>
       </div>
@@ -101,9 +101,9 @@ export default function InmueblesPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Propiedades</h1>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Propiedades</h1>
         
         {/* Filtros */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -124,8 +124,8 @@ export default function InmueblesPageContent() {
               />
             </div>
             
-            {/* Zona */}
-            <div>
+            {/* Zona - Hidden */}
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Zona
               </label>
@@ -141,7 +141,7 @@ export default function InmueblesPageContent() {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
             
             {/* Estado */}
             <div>
