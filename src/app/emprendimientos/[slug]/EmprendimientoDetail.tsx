@@ -10,6 +10,8 @@ interface EmprendimientoDetailProps {
 
 export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
 
   // Obtener todas las imágenes disponibles
   const getAllImages = () => {
@@ -47,6 +49,24 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
   const images = getAllImages();
   const currentImage = images[selectedImageIndex];
 
+  // Funciones para manejar el modal
+  const openModal = (index: number) => {
+    setModalImageIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const nextImage = () => {
+    setModalImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setModalImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
   // Extraer información de las secciones
   const getSectionContent = (componentType: string) => {
     return emprendimiento.secciones?.find(section => section.__component === componentType);
@@ -58,35 +78,72 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header con imagen principal */}
-      <div className="relative h-[60vh] min-h-[400px] bg-gray-100">
-        {currentImage ? (
-          <Image
-            src={currentImage.url}
-            alt={currentImage.alt}
-            fill
-            className="object-cover"
-            priority
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-500 text-lg">Sin imagen disponible</span>
-          </div>
-        )}
-        
-        {/* Overlay con información básica */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-white">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">
-                {emprendimiento.nombre}
-              </h1>
-              <p className="text-lg opacity-90 mb-4">
-                {emprendimiento.ubicacion_avanzada?.direccion}, {emprendimiento.ubicacion_avanzada?.localidad}
-              </p>
-              {precio && (
-                <div className="text-2xl font-semibold">
-                  {precio.texto || 'Consultar precio'}
+      {/* Header con diseño de dos columnas */}
+      <div className="bg-white">
+        <div className="max-w-6xl mx-auto px-4 py-8 bg-gray-50 rounded-lg">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-6">
+            {/* Columna izquierda - Información */}
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-4xl font-bold text-gray-900 mb-4">{emprendimiento.nombre}</h1>
+                <p className="text-lg text-gray-600 mb-4">
+                  {emprendimiento.ubicacion_avanzada?.direccion}, {emprendimiento.ubicacion_avanzada?.localidad}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {emprendimiento.ubicacion_avanzada?.localidad || 'Villa Carlos Paz'}
+                  </span>
+                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                    {(emprendimiento as any).tipo_emprendimiento || 'Emprendimiento'}
+                  </span>
+                </div>
+                {precio && (
+                  <div className="text-2xl font-bold text-gray-500 mb-6">
+                    {precio.texto || 'Consultar precio'}
+                  </div>
+                )}
+              </div>
+              
+              {/* Información básica */}
+              {/* <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-gray-800">{(emprendimiento as any).dormitorios || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">Dormitorios</div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-gray-800">{(emprendimiento as any).banos || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">Baños</div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-gray-800">{(emprendimiento as any).superficie || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">m²</div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-gray-800">{(emprendimiento as any).garajes || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">Garajes</div>
+                </div>
+              </div> */}
+            </div>
+            
+            {/* Columna derecha - Imagen */}
+            <div className="relative">
+              {currentImage ? (
+                <div className="relative h-[500px] rounded-lg overflow-hidden shadow-lg">
+                  <Image
+                    src={currentImage.url}
+                    alt={currentImage.alt}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="h-[500px] bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-500 text-lg">Sin imagen disponible</span>
                 </div>
               )}
             </div>
@@ -235,8 +292,8 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
               {images.map((image, index) => (
                 <button
                   key={index}
-                  onClick={() => setSelectedImageIndex(index)}
-                  className={`relative aspect-square rounded-lg overflow-hidden ${
+                  onClick={() => openModal(index)}
+                  className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer ${
                     selectedImageIndex === index ? 'ring-2 ring-green-600' : ''
                   }`}
                 >
@@ -252,6 +309,66 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
           </section>
         )}
       </div>
+
+      {/* Modal para ver imágenes en tamaño completo */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-7xl max-h-full">
+            {/* Botón cerrar */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-full p-2 transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Botón anterior */}
+            {images.length > 1 && (
+              <button
+                onClick={prevImage}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-full p-2 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Botón siguiente */}
+            {images.length > 1 && (
+              <button
+                onClick={nextImage}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-full p-2 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Imagen principal */}
+            <div className="relative max-w-full max-h-[90vh]">
+              <Image
+                src={images[modalImageIndex].url}
+                alt={images[modalImageIndex].alt}
+                width={1200}
+                height={800}
+                className="max-w-full max-h-full object-contain"
+                priority
+              />
+            </div>
+
+            {/* Contador de imágenes */}
+            {images.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+                {modalImageIndex + 1} / {images.length}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
