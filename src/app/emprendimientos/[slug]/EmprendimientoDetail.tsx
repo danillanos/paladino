@@ -74,7 +74,11 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
 
   const descripcion = getSectionContent('emprendimientos.descripcion-general');
   const precio = getSectionContent('emprendimientos.precio-financiamiento');
-  const amenities = getSectionContent('emprendimientos.amenities');
+  const amenities = getSectionContent('infraestructura.amenities');
+
+  // Debug: Log amenities data
+  console.log('Amenities data:', amenities);
+  console.log('All sections:', emprendimiento.secciones);
 
   // Helper function to get precio texto safely
   const getPrecioTexto = () => {
@@ -193,7 +197,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {Object.entries(amenities).map(([key, value]) => {
-                    if (key.startsWith('__') || value === null || value === undefined) return null;
+                    if (key.startsWith('__')) return null;
                     
                     const amenityNames: { [key: string]: string } = {
                       pileta: 'Pileta',
@@ -206,14 +210,45 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                       balcon: 'Balcón',
                       seguridad: 'Seguridad 24hs',
                       ascensor: 'Ascensor',
-                      expensas_incluidas: 'Expensas incluidas'
+                      expensas_incluidas: 'Expensas incluidas',
+                      vista_montanas: 'Vistas a las montañas',
+                      vista_ciudad: 'Vista a la ciudad',
+                      vista_panoramica: 'Vista panorámica',
+                      luz_natural: 'Luz natural',
+                      ventanas_doble_acristalamiento: 'Ventanas de doble acristalamiento',
+                      sistema_domotica: 'Sistema de domótica',
+                      se_aceptan_mascotas: 'Se aceptan mascotas',
+                      lavadero: 'Lavadero',
+                      exterior: 'Exterior',
+                      cocina_equipada: 'Cocina equipada',
+                      chimenea: 'Chimenea',
+                      cerca_transporte_publico: 'Cerca del transporte público',
+                      cerca_colegios: 'Cerca de los colegios internacionales',
+                      calefaccion: 'Calefacción',
+                      aparcamiento: 'Aparcamiento',
+                      garaje: 'Garaje',
+                      trastero: 'Trastero'
                     };
 
-                    if (typeof value === 'boolean' && value) {
+                    // Mostrar tanto true como null/undefined
+                    if (typeof value === 'boolean' || value === null || value === undefined) {
+                      const isAvailable = value === true;
                       return (
                         <div key={key} className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                          <span className="text-gray-700">{amenityNames[key] || key}</span>
+                          {isAvailable ? (
+                            // Tilde verde para elementos disponibles
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            // X gris claro para elementos no disponibles
+                            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          )}
+                          <span className={`${isAvailable ? 'text-gray-700' : 'text-gray-400'}`}>
+                            {amenityNames[key] || key}
+                          </span>
                         </div>
                       );
                     }
