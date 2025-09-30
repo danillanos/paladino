@@ -13,7 +13,16 @@ echo "🔨 Construyendo la aplicación..."
 npm run build
 
 echo "🔄 Recargando aplicación con PM2..."
-pm2 reload paladino
+if command -v pm2 &> /dev/null; then
+    pm2 reload paladino
+    echo "✅ Aplicación recargada con PM2"
+else
+    echo "⚠️  PM2 no está instalado. Instalando PM2 globalmente..."
+    npm install -g pm2
+    echo "🔄 Iniciando aplicación con PM2..."
+    pm2 start npm --name "paladino" -- start
+    echo "✅ Aplicación iniciada con PM2"
+fi
 
 echo "✅ Despliegue completado exitosamente!"
 echo "🌐 La aplicación está disponible en: http://localhost:3000"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Inmueble, Zona, Estado } from '@/types';
+import { Inmueble, Estado } from '@/types';
 import { ApiService } from '@/services/api';
 import PropertyCard from '@/components/PropertyCard';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -49,9 +49,8 @@ export default function InmueblesPageContent() {
         if (filtros.dormitorios) apiFiltros.dormitorios = parseInt(filtros.dormitorios);
         
         // Cargar datos en paralelo
-        const [inmueblesData, , estadosData] = await Promise.all([
+        const [inmueblesData, estadosData] = await Promise.all([
           ApiService.getInmuebles(apiFiltros),
-          // ApiService.getZonas(), // Comentado porque no se usa
           ApiService.getEstados(),
         ]);
         

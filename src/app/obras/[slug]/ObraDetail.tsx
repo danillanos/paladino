@@ -9,7 +9,7 @@ interface ObraDetailProps {
 }
 
 export default function ObraDetail({ obra }: ObraDetailProps) {
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
 

@@ -363,25 +363,25 @@ export class ApiService {
       console.log('Obras data received:', data);
       
       // Transform the data to match our Obra interface
-      const obras: Obra[] = data.map((obra: any) => ({
-        id: obra.id,
-        nombre: obra.nombre,
-        slug: obra.slug,
-        descripcion: obra.descripcion,
-        visible: obra.visible,
-        orden: obra.orden,
-        published_at: obra.published_at,
-        created_at: obra.created_at,
-        updated_at: obra.updated_at,
-        ubicacion: obra.ubicacion,
-        anio: obra.anio,
-        tipo_obra: obra.tipo_obra,
-        constructora: obra.constructora,
-        arquitecto: obra.arquitecto,
-        seo_title: obra.seo_title,
-        seo_descripcion: obra.seo_descripcion,
-        galeria: obra.galeria || [],
-        imagen_portada: obra.imagen_portada
+      const obras: Obra[] = data.map((obra: Record<string, unknown>) => ({
+        id: obra.id as number,
+        nombre: obra.nombre as string,
+        slug: obra.slug as string,
+        descripcion: obra.descripcion as string | null,
+        visible: obra.visible as boolean,
+        orden: obra.orden as number,
+        published_at: obra.published_at as string,
+        created_at: obra.created_at as string,
+        updated_at: obra.updated_at as string,
+        ubicacion: obra.ubicacion as string,
+        anio: obra.anio as number,
+        tipo_obra: obra.tipo_obra as string,
+        constructora: obra.constructora as string,
+        arquitecto: obra.arquitecto as string | null,
+        seo_title: obra.seo_title as string,
+        seo_descripcion: obra.seo_descripcion as string | null,
+        galeria: (obra.galeria as unknown[]) || [],
+        imagen_portada: obra.imagen_portada as unknown
       }));
 
       return obras;

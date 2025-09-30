@@ -9,7 +9,7 @@ interface EmprendimientoDetailProps {
 }
 
 export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoDetailProps) {
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
 
@@ -76,6 +76,22 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
   const precio = getSectionContent('emprendimientos.precio-financiamiento');
   const amenities = getSectionContent('emprendimientos.amenities');
 
+  // Helper function to get precio texto safely
+  const getPrecioTexto = () => {
+    if (precio && precio.__component === 'emprendimientos.precio-financiamiento') {
+      return (precio as unknown as Record<string, unknown>).texto as string || 'Consultar precio';
+    }
+    return 'Consultar precio';
+  };
+
+  // Helper function to get descripcion contenido safely
+  const getDescripcionContenido = () => {
+    if (descripcion && descripcion.__component === 'emprendimientos.descripcion-general') {
+      return (descripcion as unknown as Record<string, unknown>).contenido as string || 'Descripción no disponible';
+    }
+    return 'Descripción no disponible';
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header con diseño de dos columnas */}
@@ -98,12 +114,12 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                     {emprendimiento.ubicacion_avanzada?.localidad || 'Villa Carlos Paz'}
                   </span>
                   <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                    {(emprendimiento as any).tipo_emprendimiento || 'Emprendimiento'}
+                    {(emprendimiento as unknown as Record<string, unknown>).tipo_emprendimiento as string || 'Emprendimiento'}
                   </span>
                 </div>
                 {precio && (
                   <div className="text-2xl font-bold text-gray-500 mb-6">
-                    {precio.texto || 'Consultar precio'}
+                    {getPrecioTexto()}
                   </div>
                 )}
               </div>
@@ -163,7 +179,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 </h2>
                 <div className="prose prose-lg max-w-none">
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {descripcion?.contenido || 'Descripción no disponible'}
+                    {getDescripcionContenido()}
                   </p>
                 </div>
               </section>
@@ -265,16 +281,16 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tipo:</span>
-                  <span className="font-semibold capitalize">{(emprendimiento as any).tipo_emprendimiento || 'No disponible'}</span>
+                  <span className="font-semibold capitalize">{(emprendimiento as unknown as Record<string, unknown>).tipo_emprendimiento as string || 'No disponible'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Constructora:</span>
-                  <span className="font-semibold">{(emprendimiento as any).constructora || 'No disponible'}</span>
+                  <span className="font-semibold">{(emprendimiento as unknown as Record<string, unknown>).constructora as string || 'No disponible'}</span>
                 </div>
-                {(emprendimiento as any).anio && (
+                {((emprendimiento as unknown as Record<string, unknown>).anio as number) && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Año:</span>
-                    <span className="font-semibold">{(emprendimiento as any).anio}</span>
+                    <span className="font-semibold">{(emprendimiento as unknown as Record<string, unknown>).anio as number}</span>
                   </div>
                 )}
               </div>

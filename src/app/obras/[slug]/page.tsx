@@ -3,13 +3,13 @@ import { ApiService } from '@/services/api';
 import ObraDetail from './ObraDetail';
 
 interface ObraPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ObraPage({ params }: ObraPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const obra = await ApiService.getObraBySlug(slug);
 
   if (!obra) {
@@ -20,7 +20,7 @@ export default async function ObraPage({ params }: ObraPageProps) {
 }
 
 export async function generateMetadata({ params }: ObraPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const obra = await ApiService.getObraBySlug(slug);
 
   if (!obra) {
