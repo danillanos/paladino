@@ -1,4 +1,4 @@
-import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento } from '@/types';
+import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento, Obra } from '@/types';
 
 // API configuration - you can change this to your actual API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://paladinopropiedades.com.ar';
@@ -336,6 +336,68 @@ export class ApiService {
       return emprendimiento || null;
     } catch (error) {
       console.error(`Error fetching emprendimiento with slug ${slug}:`, error);
+      return null;
+    }
+  }
+
+  static async getObras(): Promise<Obra[]> {
+    try {
+      // Use the specific API endpoint for obras
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await globalThis.fetch('https://api.paladinopropiedades.com.ar/obras', {
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorMessage = `Obras API not available (${response.status})`;
+        console.warn(errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('Obras data received:', data);
+      
+      // Transform the data to match our Obra interface
+      const obras: Obra[] = data.map((obra: any) => ({
+        id: obra.id,
+        nombre: obra.nombre,
+        slug: obra.slug,
+        descripcion: obra.descripcion,
+        visible: obra.visible,
+        orden: obra.orden,
+        published_at: obra.published_at,
+        created_at: obra.created_at,
+        updated_at: obra.updated_at,
+        ubicacion: obra.ubicacion,
+        anio: obra.anio,
+        tipo_obra: obra.tipo_obra,
+        constructora: obra.constructora,
+        arquitecto: obra.arquitecto,
+        seo_title: obra.seo_title,
+        seo_descripcion: obra.seo_descripcion,
+        galeria: obra.galeria || [],
+        imagen_portada: obra.imagen_portada
+      }));
+
+      return obras;
+    } catch (error) {
+      console.error('Error fetching obras:', error);
+      return [];
+    }
+  }
+
+  static async getObraBySlug(slug: string): Promise<Obra | null> {
+    try {
+      const obras = await ApiService.getObras();
+      const obra = obras.find(obra => obra.slug === slug);
+      return obra || null;
+    } catch (error) {
+      console.error(`Error fetching obra with slug ${slug}:`, error);
       return null;
     }
   }

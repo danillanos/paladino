@@ -252,4 +252,57 @@ export interface Emprendimiento {
   secciones: (EmprendimientoDescripcion | EmprendimientoAmenities | EmprendimientoPrecio)[];
   cover: EmprendimientoImagen;
   galeria: EmprendimientoImagen[];
+}
+
+export interface ObraImagen {
+  id: number;
+  name: string;
+  alternativeText: string;
+  caption: string;
+  width: number;
+  height: number;
+  formats: {
+    thumbnail?: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+  };
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: unknown;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Obra {
+  id: number;
+  nombre: string;
+  slug: string;
+  descripcion: string | null;
+  visible: boolean;
+  orden: number;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+  ubicacion: string;
+  anio: number;
+  tipo_obra: string;
+  constructora: string;
+  arquitecto: string | null;
+  seo_title: string;
+  seo_descripcion: string | null;
+  galeria: ObraImagen[];
+  imagen_portada: ObraImagen;
 } 

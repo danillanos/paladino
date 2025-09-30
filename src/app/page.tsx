@@ -2,6 +2,7 @@ import HeroSection from '@/components/HeroSection';
 import FeaturedProperties from '@/components/FeaturedProperties';
 import FeaturedEmprendimientos from '@/components/FeaturedEmprendimientos';
 import DestacadosSection from '@/components/DestacadosSection';
+import FeaturedObras from '@/components/FeaturedObras';
 // import FeaturedLocations from '@/components/FeaturedLocations';
 
 export default function HomePage() {
@@ -11,6 +12,7 @@ export default function HomePage() {
       <FeaturedEmprendimientos />
       <FeaturedProperties />
       <DestacadosSection />
+      <FeaturedObras />
       {/* <FeaturedLocations /> */}
       
       {/* About Section */}
