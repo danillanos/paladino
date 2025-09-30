@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedZona, setSelectedZona] = useState('');
+  // const [selectedZona, setSelectedZona] = useState(''); // Comentado porque no se usa
   const [selectedTipo, setSelectedTipo] = useState('');
   const [selectedOperacion, setSelectedOperacion] = useState('comprar');
   const router = useRouter();
@@ -17,9 +17,9 @@ export default function HeroSection() {
     if (searchQuery.trim()) {
       params.append('search', searchQuery);
     }
-    if (selectedZona) {
-      params.append('zona', selectedZona);
-    }
+    // if (selectedZona) {
+    //   params.append('zona', selectedZona);
+    // }
     if (selectedTipo) {
       params.append('tipo', selectedTipo);
     }

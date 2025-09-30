@@ -10,7 +10,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 export default function InmueblesPageContent() {
   const searchParams = useSearchParams();
   const [inmuebles, setInmuebles] = useState<Inmueble[]>([]);
-  const [zonas, setZonas] = useState<Zona[]>([]);
+  // const [zonas, setZonas] = useState<Zona[]>([]);
   const [estados, setEstados] = useState<Estado[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,14 +49,14 @@ export default function InmueblesPageContent() {
         if (filtros.dormitorios) apiFiltros.dormitorios = parseInt(filtros.dormitorios);
         
         // Cargar datos en paralelo
-        const [inmueblesData, zonasData, estadosData] = await Promise.all([
+        const [inmueblesData, , estadosData] = await Promise.all([
           ApiService.getInmuebles(apiFiltros),
-          ApiService.getZonas(),
+          // ApiService.getZonas(), // Comentado porque no se usa
           ApiService.getEstados(),
         ]);
         
         setInmuebles(inmueblesData);
-        setZonas(zonasData);
+        // setZonas(zonasData); // Comentado porque no se usa
         setEstados(estadosData);
         setError(null);
       } catch (err) {
@@ -154,7 +154,7 @@ export default function InmueblesPageContent() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
               >
                 <option value="">Todos los estados</option>
-                {estados.map((estado) => (
+                {estados?.map((estado) => (
                   <option key={estado.id} value={estado.nombre}>
                     {estado.nombre}
                   </option>
@@ -264,12 +264,12 @@ export default function InmueblesPageContent() {
           <>
             <div className="mb-6">
               <p className="text-gray-600">
-                Se encontraron {inmuebles.length} propiedades
+                Se encontraron {inmuebles?.length || 0} propiedades
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {inmuebles.map((inmueble) => (
+              {inmuebles?.map((inmueble) => (
                 <PropertyCard
                   key={inmueble.id}
                   property={inmueble}

@@ -15,9 +15,10 @@ export default function FeaturedEmprendimientos() {
       try {
         const data = await ApiService.getEmprendimientos();
         console.log('Emprendimientos data:', data);
-        setEmprendimientos(data);
+        setEmprendimientos(data || []);
       } catch (error) {
         console.error('Error fetching emprendimientos:', error);
+        setEmprendimientos([]);
       } finally {
         setLoading(false);
       }
@@ -119,9 +120,9 @@ export default function FeaturedEmprendimientos() {
                         <h3 className="text-white text-xl font-semibold mb-2">
                           {emprendimiento.nombre}
                         </h3>
-                        <p className="text-white text-sm opacity-90">
-                          {emprendimiento.ubicacion_avanzada.localidad}
-                        </p>
+            <p className="text-white text-sm opacity-90">
+              {emprendimiento.ubicacion_avanzada?.localidad || 'Villa Carlos Paz'}
+            </p>
                       </div>
                     </div>
                   </div>

@@ -49,7 +49,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
 
   // Extraer información de las secciones
   const getSectionContent = (componentType: string) => {
-    return emprendimiento.secciones.find(section => section.__component === componentType);
+    return emprendimiento.secciones?.find(section => section.__component === componentType);
   };
 
   const descripcion = getSectionContent('emprendimientos.descripcion-general');
@@ -82,7 +82,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 {emprendimiento.nombre}
               </h1>
               <p className="text-lg opacity-90 mb-4">
-                {emprendimiento.ubicacion_avanzada.direccion}, {emprendimiento.ubicacion_avanzada.localidad}
+                {emprendimiento.ubicacion_avanzada?.direccion}, {emprendimiento.ubicacion_avanzada?.localidad}
               </p>
               {precio && (
                 <div className="text-2xl font-semibold">
@@ -106,7 +106,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 </h2>
                 <div className="prose prose-lg max-w-none">
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {descripcion.contenido}
+                    {descripcion?.contenido || 'Descripción no disponible'}
                   </p>
                 </div>
               </section>
@@ -157,12 +157,12 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
               </h2>
               <div className="bg-gray-50 p-6 rounded-lg">
                 <p className="text-gray-700 mb-2">
-                  <strong>Dirección:</strong> {emprendimiento.ubicacion_avanzada.direccion}
+                  <strong>Dirección:</strong> {emprendimiento.ubicacion_avanzada?.direccion || 'No disponible'}
                 </p>
                 <p className="text-gray-700 mb-2">
-                  <strong>Localidad:</strong> {emprendimiento.ubicacion_avanzada.localidad}
+                  <strong>Localidad:</strong> {emprendimiento.ubicacion_avanzada?.localidad || 'No disponible'}
                 </p>
-                {emprendimiento.ubicacion_avanzada.piso && (
+                {emprendimiento.ubicacion_avanzada?.piso && (
                   <p className="text-gray-700">
                     <strong>Piso:</strong> {emprendimiento.ubicacion_avanzada.piso}
                   </p>
@@ -208,16 +208,16 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tipo:</span>
-                  <span className="font-semibold capitalize">{emprendimiento.tipo_emprendimiento}</span>
+                  <span className="font-semibold capitalize">{(emprendimiento as any).tipo_emprendimiento || 'No disponible'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Constructora:</span>
-                  <span className="font-semibold">{emprendimiento.constructora}</span>
+                  <span className="font-semibold">{(emprendimiento as any).constructora || 'No disponible'}</span>
                 </div>
-                {emprendimiento.anio && (
+                {(emprendimiento as any).anio && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Año:</span>
-                    <span className="font-semibold">{emprendimiento.anio}</span>
+                    <span className="font-semibold">{(emprendimiento as any).anio}</span>
                   </div>
                 )}
               </div>

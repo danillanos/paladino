@@ -20,9 +20,14 @@ export class ApiService {
       }
       
       // Test the main API
+      const testController = new AbortController();
+      const testTimeoutId = setTimeout(() => testController.abort(), 5000);
+      
       const testResponse = await globalThis.fetch(`${API_BASE_URL}/api/test`, {
-        signal: AbortSignal.timeout(5000),
+        signal: testController.signal,
       });
+      
+      clearTimeout(testTimeoutId);
       
       if (testResponse.ok) {
         console.log('✅ Main API is working');
@@ -47,14 +52,19 @@ export class ApiService {
       const fullUrl = `${API_BASE_URL}${endpoint}`;
       console.log(`Fetching from API: ${fullUrl}`);
 
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       // Use globalThis.fetch to ensure we're using the global fetch
       const response = await globalThis.fetch(fullUrl, {
         headers: {
           'Content-Type': 'application/json',
         },
-        // Add timeout and better error handling
-        signal: AbortSignal.timeout(10000), // 10 second timeout
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorMessage = `API endpoint not found (${response.status}): ${fullUrl}`;
@@ -236,12 +246,17 @@ export class ApiService {
   static async getSiteConfiguration(): Promise<SiteConfiguration | null> {
     try {
       // Use the specific API endpoint for site configuration
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       const response = await globalThis.fetch('https://api.paladinopropiedades.com.ar/configuracion-sitio', {
         headers: {
           'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(10000), // 10 second timeout
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorMessage = `Site configuration API not available (${response.status})`;
@@ -274,12 +289,17 @@ export class ApiService {
   static async getEmprendimientos(): Promise<Emprendimiento[]> {
     try {
       // Use the specific API endpoint for emprendimientos
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       const response = await globalThis.fetch('https://api.paladinopropiedades.com.ar/emprendimientos', {
         headers: {
           'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(10000), // 10 second timeout
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorMessage = `Emprendimientos API not available (${response.status})`;
