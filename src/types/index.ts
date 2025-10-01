@@ -163,6 +163,7 @@ export interface SiteConfiguration {
   ubicacion: Ubicacion;
   contactos: Contacto[];
   hero_imagen: HeroImagen[];
+  maps_html: string;
 }
 
 // Emprendimientos Types
