@@ -107,6 +107,7 @@ export interface Contacto {
   whatsapp: string;
   whatsapp_mensaje: string;
   whatsapp_url: string | null;
+  instagram: string;
 }
 
 export interface Ubicacion {
@@ -164,6 +165,7 @@ export interface SiteConfiguration {
   contactos: Contacto[];
   hero_imagen: HeroImagen[];
   maps_html: string;
+  instagram: string;
 }
 
 // Emprendimientos Types
