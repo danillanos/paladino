@@ -3,6 +3,7 @@ import FeaturedProperties from '@/components/FeaturedProperties';
 import FeaturedEmprendimientos from '@/components/FeaturedEmprendimientos';
 import DestacadosSection from '@/components/DestacadosSection';
 import FeaturedObras from '@/components/FeaturedObras';
+import WhatsAppFloat from '@/components/WhatsAppFloat';
 // import FeaturedLocations from '@/components/FeaturedLocations';
 
 export default function HomePage() {
@@ -95,6 +96,9 @@ export default function HomePage() {
           </div>
         </div>
       </section> */}
+      
+      {/* WhatsApp Float Button */}
+      <WhatsAppFloat />
     </div>
   );
 }
