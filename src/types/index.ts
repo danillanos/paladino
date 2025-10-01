@@ -166,6 +166,8 @@ export interface SiteConfiguration {
   hero_imagen: HeroImagen[];
   maps_html: string;
   instagram: string;
+  texto_footer: string;
+  copy: string;
 }
 
 // Emprendimientos Types
