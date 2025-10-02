@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ApiService } from '@/services/api';
 import { CompanyDetail } from '@/types';
@@ -30,47 +30,7 @@ export default function QuienesSomosPage() {
     fetchCompanyInfo();
   }, []);
 
-  // Auto-rotate carousel
-  useEffect(() => {
-    if (!companyInfo) return;
-    
-    const images = getAllImages();
-    if (images.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [companyInfo]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  if (error || !companyInfo) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <p className="text-red-600 text-lg mb-4">{error || 'No se pudo cargar la información'}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
-          >
-            Reintentar
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const getAllImages = (): string[] => {
+  const getAllImages = useCallback((): string[] => {
     if (!companyInfo) return [];
     
     const images: string[] = [];
@@ -96,15 +56,47 @@ export default function QuienesSomosPage() {
     }
     
     return images;
-  };
+  }, [companyInfo]);
 
-  const getImageUrl = () => {
+  // Auto-rotate carousel
+  useEffect(() => {
+    if (!companyInfo) return;
+    
     const images = getAllImages();
-    if (images.length > 0) {
-      return images[currentImageIndex] || images[0];
-    }
-    return '/placeholder-property.jpg';
-  };
+    if (images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [companyInfo, getAllImages]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error || !companyInfo) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <p className="text-red-600 text-lg mb-4">{error || 'No se pudo cargar la información'}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const getMainPhotoUrl = () => {
     if (companyInfo?.foto_principal && companyInfo.foto_principal.length > 0) {
@@ -225,7 +217,7 @@ export default function QuienesSomosPage() {
               </p>
               <div className="bg-green-50 border-l-4 border-green-600 p-6 rounded-r-lg">
                 <p className="text-green-800 font-semibold italic text-lg">
-                  "Un visitante atendido con honestidad y solvencia es un cliente para siempre."
+                  &ldquo;Un visitante atendido con honestidad y solvencia es un cliente para siempre.&rdquo;
                 </p>
               </div>
             </div>
