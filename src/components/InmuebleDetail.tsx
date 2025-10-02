@@ -27,7 +27,7 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
     
     // Agregar imágenes de la galería si existen
     if (inmueble.galeria && inmueble.galeria.length > 0) {
-      inmueble.galeria.forEach((img: any) => {
+      inmueble.galeria.forEach((img) => {
         if (img.url) {
           const fullUrl = img.url.startsWith('http') 
             ? img.url 

@@ -5,7 +5,9 @@ export interface Inmueble {
   precio: number | null;
   precio_inmueble: number | null;
   moneda: string | null;
-  tipo: string | null;
+  tipo: {
+    nombre: string;
+  } | null;
   estado: {
     nombre: string;
   } | null;
@@ -15,7 +17,25 @@ export interface Inmueble {
   superficie: number | null;
   superficie_terreno?: number | null;
   imagenes: string[];
-  galeria: string[];
+  galeria: {
+    id: number;
+    name: string;
+    alternativeText: string;
+    caption: string;
+    width: number;
+    height: number;
+    formats: unknown;
+    hash: string;
+    ext: string;
+    mime: string;
+    size: number;
+    url: string;
+    previewUrl: string | null;
+    provider: string;
+    provider_metadata: unknown;
+    created_at: string;
+    updated_at: string;
+  }[];
   multimedia: unknown[];
   destacado: boolean | null;
   created_at: string;
@@ -25,7 +45,9 @@ export interface Inmueble {
   direccion: string | null;
   localidad: string | null;
   cochera: string | null;
-  operacion: string | null;
+  operacion: {
+    nombre: string;
+  } | null;
   ubicacion: string | null;
   ambientes: string | null;
   estado_general: string | null;
@@ -43,18 +65,86 @@ export interface Inmueble {
   catalogo_de_zona: {
     nombre: string;
   } | null;
-  servicios: string | null;
-  amenities: string | null;
-  comodidades_internas: string | null;
-  seguridad: string | null;
+  servicios: {
+    id: number;
+    agua_corriente: boolean;
+    luz: boolean;
+    gas_natural: boolean;
+    cloacas: boolean;
+    internet: boolean;
+    cable: boolean;
+    telefono: boolean;
+  } | null;
+  amenities: {
+    id: number;
+    pileta: boolean;
+    parrilla: boolean;
+    solarium: boolean;
+    gimnasio: boolean;
+    laundry: boolean;
+    sum: boolean;
+    terraza: boolean;
+    balcon: boolean;
+    seguridad: boolean;
+    ascensor: boolean;
+    expensas_incluidas: boolean | null;
+  } | null;
+  comodidades_internas: {
+    id: number;
+    aire_acondicionado: boolean;
+    calefaccion: boolean;
+    hogar: boolean;
+    estufa: boolean | null;
+    salamandra: boolean | null;
+    ventilador: boolean | null;
+    calefon: boolean | null;
+    termotanque: boolean | null;
+    placares_empotrados: boolean | null;
+    vestidor: boolean | null;
+    alarma: boolean | null;
+    domotica_automatizaciones_del_hogar: boolean | null;
+    cocina_equipada: boolean;
+    lavadero_interno: boolean | null;
+    detector_de_humo: boolean | null;
+    portero_video: boolean | null;
+    iluminacion_led: boolean;
+    cerradura_digital: boolean | null;
+  } | null;
+  seguridad: {
+    id: number;
+    porton_electrico: boolean | null;
+    rejas: boolean | null;
+    camara_seguridad: boolean | null;
+    sistema_alarma: boolean | null;
+    vigilancia_24hs: boolean | null;
+    barrio_cerrado: boolean | null;
+    acceso_controlado: boolean | null;
+  } | null;
   reglas_convivencia: string | null;
   reglas_documentacion: string | null;
   reglas_economicas: string | null;
-  contacto: string | null;
+  contacto: {
+    id: number;
+    nombre: string;
+    telefono: string;
+    email: string;
+    observaciones: string | null;
+    whatsapp: string;
+    whatsapp_mensaje: string;
+    whatsapp_url: string | null;
+    instagram: string | null;
+  } | null;
   galeria_destacada: unknown[];
   precio_ref: string | null;
   ubicacion_avanzada: {
+    id: number;
+    direccion: string;
     localidad: string;
+    piso: string | null;
+    latitud: number | null;
+    longitud: number | null;
+    orientacion: string | null;
+    zoom: number;
   } | null;
   imagen: {
     url: string;

@@ -3,7 +3,7 @@
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
 export default function WhatsAppFloat() {
-  const { configuration, loading } = useSiteConfiguration();
+  const { configuration } = useSiteConfiguration();
 
   // Obtener el número de WhatsApp del primer contacto
   const whatsappNumber = configuration?.contactos && configuration.contactos.length > 0 

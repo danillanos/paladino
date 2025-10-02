@@ -43,7 +43,7 @@ export default function PropertyCard({ property, isDestacado = false }: Property
           </div>
         )}
         <div className="absolute top-3 right-3 bg-white bg-opacity-90 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
-          {property.tipo}
+          {property.tipo?.nombre || 'Propiedad'}
         </div>
         <div className="absolute bottom-3 left-3 right-3">
           <div className="bg-white bg-opacity-95 rounded-lg p-2">
