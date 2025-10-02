@@ -41,16 +41,14 @@ export default function ContactoPage() {
   };
 
   return (
-          <div className="min-h-screen bg-gray-50 pt-20">
+          <div className="min-h-screen bg-gray-50 ">
         <div className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Contacto</h1>
         
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Información de contacto */}
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Información de Contacto</h2>
-              
+            <div>              
               {configLoading ? (
                 <div className="space-y-6">
                   {[1, 2, 3, 4].map((i) => (

@@ -400,4 +400,40 @@ export interface Obra {
   seo_descripcion: string | null;
   galeria: ObraImagen[];
   imagen_portada: ObraImagen;
+}
+
+export interface CompanyDetail {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  mision: string;
+  vision: string;
+  seo_title: string;
+  seo_descripcion: string;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+  foto_principal: CompanyImage[];
+  galeria: CompanyImage[];
+  seo_imagen: CompanyImage[];
+}
+
+export interface CompanyImage {
+  id: number;
+  name: string;
+  alternativeText: string;
+  caption: string;
+  width: number;
+  height: number;
+  formats: unknown;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: unknown;
+  created_at: string;
+  updated_at: string;
 } 

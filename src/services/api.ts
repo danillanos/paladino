@@ -1,4 +1,4 @@
-import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento, Obra } from '@/types';
+import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento, Obra, CompanyDetail } from '@/types';
 
 // API configuration - you can change this to your actual API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://paladinopropiedades.com.ar';
@@ -795,5 +795,20 @@ export class ApiService {
     }
 
     return filteredInmuebles;
+  }
+
+  // Get company detail information
+  static async getCompanyDetail(): Promise<CompanyDetail> {
+    try {
+      const response = await fetch('https://admipa.paladinopropiedades.com.ar/quienes-somos');
+      if (!response.ok) {
+        throw new Error('Failed to fetch company detail');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching company detail:', error);
+      throw error;
+    }
   }
 } 

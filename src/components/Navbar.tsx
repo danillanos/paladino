@@ -36,6 +36,9 @@ export default function Navbar() {
             <Link href="/emprendimientos" className="text-gray-700 hover:text-green-600 transition-colors">
               Emprendimientos
             </Link>
+            <Link href="/quienes-somos" className="text-gray-700 hover:text-green-600 transition-colors">
+              Quiénes somos
+            </Link>
             {/* <Link href="/zonas" className="text-gray-700 hover:text-green-600 transition-colors">
               Zonas
             </Link> */}
@@ -84,6 +87,13 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Emprendimientos
+              </Link>
+              <Link
+                href="/quienes-somos"
+                className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Quiénes somos
               </Link>
               {/* <Link
                 href="/zonas"
