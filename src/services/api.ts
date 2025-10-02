@@ -153,11 +153,35 @@ export class ApiService {
 
   static async getInmuebleById(id: number): Promise<Inmueble | null> {
     try {
-      const response = await ApiService.fetchApi<Inmueble>(`/inmuebles/${id}`);
-      return response.data?.[0] || null;
+      // Usar la API real de inmuebles
+      const response = await fetch('https://api.paladinopropiedades.com.ar/inmuebles');
+      if (!response.ok) {
+        throw new Error('Failed to fetch inmuebles');
+      }
+      const data = await response.json();
+      
+      // Buscar el inmueble por ID
+      const inmueble = data.find((item: Inmueble) => item.id === id);
+      
+      if (inmueble) {
+        return inmueble;
+      }
+      
+      // Si no se encuentra, intentar con datos mock como fallback
+      const mockData = await ApiService.getMockInmuebles();
+      const mockInmueble = mockData.find((item: Inmueble) => item.id === id);
+      return mockInmueble || null;
     } catch (error) {
       console.error(`Error fetching inmueble ${id}:`, error);
-      return null;
+      // Fallback a datos mock
+      try {
+        const mockData = await ApiService.getMockInmuebles();
+        const mockInmueble = mockData.find((item: Inmueble) => item.id === id);
+        return mockInmueble || null;
+      } catch (mockError) {
+        console.error('Error with mock data too:', mockError);
+        return null;
+      }
     }
   }
 
