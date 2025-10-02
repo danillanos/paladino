@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Emprendimiento } from '@/types';
+import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
 interface EmprendimientoDetailProps {
   emprendimiento: Emprendimiento;
@@ -12,6 +13,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
   const [selectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const { configuration } = useSiteConfiguration();
 
   // Obtener todas las imágenes disponibles
   const getAllImages = () => {
@@ -296,10 +298,10 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
               </div>
               <div className="mt-4 pt-4 border-t border-green-200">
                 <p className="text-sm text-gray-600">
-                  <strong>Teléfono:</strong> +54 9 3541 123-456
+                  <strong>Teléfono:</strong> {configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].telefono : ''}
                 </p>
                 <p className="text-sm text-gray-600">
-                  <strong>Email:</strong> info@paladinopropiedades.com.ar
+                  <strong>Email:</strong> {configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].email : ''}
                 </p>
               </div>
             </div>

@@ -6,14 +6,6 @@ import Image from 'next/image';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/inmuebles?search=${encodeURIComponent(searchQuery)}`;
-    }
-  };
 
   return (
     <nav className="bg-white shadow-lg fixed w-full top-0 z-50">
@@ -41,6 +33,9 @@ export default function Navbar() {
             <Link href="/inmuebles" className="text-gray-700 hover:text-green-600 transition-colors">
               Propiedades
             </Link>
+            <Link href="/emprendimientos" className="text-gray-700 hover:text-green-600 transition-colors">
+              Emprendimientos
+            </Link>
             {/* <Link href="/zonas" className="text-gray-700 hover:text-green-600 transition-colors">
               Zonas
             </Link> */}
@@ -49,26 +44,6 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Search Bar */}
-          <div className="hidden md:flex items-center space-x-4 ml-2.5">
-            <form onSubmit={handleSearch} className="flex">
-              <input
-                type="text"
-                placeholder="Buscar propiedades..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-r-md hover:bg-green-700 transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            </form>
-          </div>
 
           {/* Mobile menu button */}
           <button
@@ -103,6 +78,13 @@ export default function Navbar() {
               >
                 Propiedades
               </Link>
+              <Link
+                href="/emprendimientos"
+                className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Emprendimientos
+              </Link>
               {/* <Link
                 href="/zonas"
                 className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors"
@@ -117,27 +99,6 @@ export default function Navbar() {
               >
                 Contacto
               </Link>
-              
-              {/* Mobile Search */}
-              <form onSubmit={handleSearch} className="px-3 py-2">
-                <div className="flex">
-                  <input
-                    type="text"
-                    placeholder="Buscar propiedades..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3 py-2 bg-green-600 text-white rounded-r-md hover:bg-green-700 transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </button>
-                </div>
-              </form>
             </div>
           </div>
         )}

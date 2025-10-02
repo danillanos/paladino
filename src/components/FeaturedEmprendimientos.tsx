@@ -50,10 +50,10 @@ export default function FeaturedEmprendimientos() {
   }
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-white pt-4 pb-16">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Emprendimientos destacados
+          Nuevos emprendimientos
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

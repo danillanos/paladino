@@ -32,7 +32,7 @@ export default function FeaturedObras() {
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            Obras realizadas
+            Emprendimientos finalizados
           </h2>
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
@@ -47,7 +47,7 @@ export default function FeaturedObras() {
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            Obras realizadas
+            Emprendimientos finalizados
           </h2>
           <p className="text-center text-gray-600">No hay obras disponibles en este momento.</p>
         </div>
@@ -59,7 +59,7 @@ export default function FeaturedObras() {
     <section className="bg-white py-16">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Obras realizadas
+          Emprendimientos finalizados
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {obras.map((obra) => {

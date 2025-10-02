@@ -216,7 +216,7 @@ export default function ContactoPage() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-gray-800">Teléfono</h3>
-                          <p className="text-gray-600">+54 11 1234-5678</p>
+                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].telefono : '+54 11 1234-5678'}</p>
                         </div>
                       </div>
                       
@@ -229,7 +229,7 @@ export default function ContactoPage() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-gray-800">Email</h3>
-                          <p className="text-gray-600">info@paladinopropiedades.com</p>
+                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].email : 'info@paladinopropiedades.com'}</p>
                         </div>
                       </div>
                     </>
