@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
-export default function ContactoPage() {
+function ContactoContent() {
   const { configuration, loading: configLoading } = useSiteConfiguration();
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
@@ -434,5 +434,18 @@ export default function ContactoPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ContactoPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">Cargando...</p>
+      </div>
+    </div>}>
+      <ContactoContent />
+    </Suspense>
   );
 } 

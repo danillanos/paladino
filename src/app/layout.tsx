@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -19,7 +19,11 @@ export const metadata: Metadata = {
   description: "Encuentra tu hogar ideal con Paladino Propiedades. Las mejores propiedades en las zonas más exclusivas de Buenos Aires.",
   keywords: "inmobiliaria, propiedades, departamentos, casas, venta, alquiler, Buenos Aires, Paladino",
   authors: [{ name: "Paladino Propiedades" }],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
