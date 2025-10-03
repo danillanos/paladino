@@ -14,6 +14,7 @@ export default function ContactoPage() {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -25,10 +26,25 @@ export default function ContactoPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+    setSuccess(false);
     
-    // Simular envío del formulario
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorMessage = data.details ? `${data.error}: ${data.details}` : data.error || 'Error al enviar el mensaje';
+        throw new Error(errorMessage);
+      }
+
       setSuccess(true);
       setFormData({
         nombre: '',
@@ -37,7 +53,11 @@ export default function ContactoPage() {
         mensaje: '',
         tipo: 'consulta'
       });
-    }, 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al enviar el mensaje');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,7 +68,7 @@ export default function ContactoPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Información de contacto */}
-            <div>              
+            <div>
               {configLoading ? (
                 <div className="space-y-6">
                   {[1, 2, 3, 4].map((i) => (
@@ -192,63 +212,63 @@ export default function ContactoPage() {
                   ) : (
                     /* Fallback si no hay configuración */
                     <>
-                      <div className="flex items-start space-x-4">
+                <div className="flex items-start space-x-4">
                         <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-800">Dirección</h3>
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Dirección</h3>
                           <p className="text-gray-600">
                             {configuration?.ubicacion ? `${configuration.ubicacion.direccion}, ${configuration.ubicacion.localidad}` : 'San Martín 540, Villa Carlos Paz, Córdoba'}
                           </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-800">Teléfono</h3>
-                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].telefono : '+54 11 1234-5678'}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-800">Email</h3>
-                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].email : 'info@paladinopropiedades.com'}</p>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  
-                  {/* Horarios de Atención */}
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800">Horarios de Atención</h3>
-                      <p className="text-gray-600">
-                        Lunes a Viernes: 9:00 - 18:00<br />
-                        Sábados: 9:00 - 13:00
-                      </p>
-                    </div>
                   </div>
                 </div>
+                
+                <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Teléfono</h3>
+                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].telefono : '+54 11 1234-5678'}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Email</h3>
+                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].email : 'info@paladinopropiedades.com'}</p>
+                  </div>
+                </div>
+                    </>
+                  )}
+                
+                  {/* Horarios de Atención */}
+                <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Horarios de Atención</h3>
+                    <p className="text-gray-600">
+                      Lunes a Viernes: 9:00 - 18:00<br />
+                      Sábados: 9:00 - 13:00
+                    </p>
+                  </div>
+                </div>
+              </div>
               )}
               
             </div>
@@ -258,11 +278,18 @@ export default function ContactoPage() {
               <h2 className="text-2xl font-semibold text-gray-800 mb-6">Envíanos un mensaje</h2>
               
               {success ? (
-                <div className="bg-slate-100 border border-slate-400 text-slate-700 px-4 py-3 rounded">
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
                   <p className="font-semibold">¡Mensaje enviado con éxito!</p>
                   <p>Nos pondremos en contacto contigo pronto.</p>
                 </div>
               ) : (
+                <>
+                  {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                      <p className="font-semibold">Error al enviar el mensaje</p>
+                      <p>{error}</p>
+                    </div>
+                  )}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">
@@ -351,6 +378,7 @@ export default function ContactoPage() {
                     {loading ? 'Enviando...' : 'Enviar mensaje'}
                   </button>
                 </form>
+                </>
               )}
             </div>
           </div>

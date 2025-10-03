@@ -258,6 +258,54 @@ export interface SiteConfiguration {
   instagram: string;
   texto_footer: string;
   copy: string;
+  Logos: {
+    id: number;
+    Logo_1: LogoImage[];
+    Logo_2: LogoImage[];
+  };
+}
+
+export interface LogoImage {
+  id: number;
+  name: string;
+  alternativeText: string;
+  caption: string;
+  width: number;
+  height: number;
+  formats: {
+    small?: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+    thumbnail?: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+  };
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: unknown;
+  created_at: string;
+  updated_at: string;
 }
 
 // Emprendimientos Types
