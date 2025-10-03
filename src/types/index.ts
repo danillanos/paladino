@@ -198,6 +198,7 @@ export interface Contacto {
   whatsapp_mensaje: string;
   whatsapp_url: string | null;
   instagram: string;
+  contact_email_receiver: string;
 }
 
 export interface Ubicacion {

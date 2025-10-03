@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Inmueble } from '@/types';
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
@@ -70,6 +71,27 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
       parts.push(inmueble.direccion);
     }
     return parts.length > 0 ? parts.join(', ') : 'Villa Carlos Paz';
+  };
+
+  const generateContactMessage = () => {
+    const location = getLocationText();
+    const tipo = inmueble.tipo?.nombre || 'Propiedad';
+    const operacion = inmueble.operacion?.nombre || 'Venta';
+    const precio = inmueble.precio ? `$${inmueble.precio.toLocaleString()}` : 'Consultar precio';
+    
+    return `Hola,
+
+Quiero más información del inmueble:
+
+- Tipo: ${tipo}
+- Operación: ${operacion}
+- Precio: ${precio}
+- Ubicación: ${location}
+- Descripción: ${inmueble.descripcion || 'Sin descripción disponible'}
+
+Por favor, contactarme para coordinar una visita o brindarme más detalles.
+
+Gracias.`;
   };
 
   return (
@@ -382,9 +404,12 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
             <div className="bg-white rounded-lg shadow-md p-6 mb-6 sticky top-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Información de contacto</h3>
               <div className="space-y-4">
-                <button className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-semibold">
+                <Link 
+                  href={`/contacto?mensaje=${encodeURIComponent(generateContactMessage())}`}
+                  className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-semibold text-center block"
+                >
                   Solicitar información
-                </button>
+                </Link>
                 <button className="w-full border border-green-600 text-green-600 py-3 px-4 rounded-md hover:bg-green-50 transition-colors font-semibold">
                   Agendar visita
                 </button>

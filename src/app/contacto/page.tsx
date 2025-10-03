@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
 export default function ContactoPage() {
   const { configuration, loading: configLoading } = useSiteConfiguration();
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -15,6 +17,17 @@ export default function ContactoPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Pre-llenar el mensaje si viene desde un inmueble
+  useEffect(() => {
+    const mensajeParam = searchParams.get('mensaje');
+    if (mensajeParam) {
+      setFormData(prev => ({
+        ...prev,
+        mensaje: decodeURIComponent(mensajeParam)
+      }));
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({

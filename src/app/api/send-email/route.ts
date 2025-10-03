@@ -23,17 +23,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Obtener configuración del sitio para el logo
+    // Obtener configuración del sitio para el logo y email de destino
     const siteConfig = await ApiService.getSiteConfiguration();
     const logoUrl = siteConfig?.Logos?.Logo_2?.[0]?.url 
       ? `https://api.paladinopropiedades.com.ar${siteConfig.Logos.Logo_2[0].url}`
       : 'https://via.placeholder.com/200x80/1e40af/ffffff?text=PALADINO';
+    
+    const receiverEmail = siteConfig?.contactos?.[0]?.contact_email_receiver || 'info@paladinopropiedades.com.ar';
+    const senderEmail = siteConfig?.contactos?.[0]?.email || 'info@paladinopropiedades.com.ar';
 
     // Log de configuración
     console.log('Configuración ZeptoMail:');
     console.log('Token configurado:', !!process.env.ZEPTO_SMTP_TOKEN);
-    console.log('Mail From:', process.env.MAIL_FROM);
-    console.log('Mail To:', process.env.MAIL_TO);
+    console.log('Mail From (config):', senderEmail);
+    console.log('Mail From (env):', process.env.MAIL_FROM);
+    console.log('Receiver Email (from config):', receiverEmail);
     console.log('Email del usuario (reply-to):', email);
     console.log('Nombre del usuario:', nombre);
     console.log('Logo URL:', logoUrl);
@@ -41,13 +45,13 @@ export async function POST(request: NextRequest) {
     // Preparar el email según la documentación de ZeptoMail
     const emailData = {
       from: {
-        address: "info@paladinopropiedades.com.ar",
+        address: senderEmail,
         name: "Web Paladino Propiedades"
       },
       to: [
         {
           email_address: {
-            address: process.env.MAIL_TO || 'hdaniel.llanos@gmail.com',
+            address: receiverEmail,
             name: "Paladino Propiedades"
           }
         }
