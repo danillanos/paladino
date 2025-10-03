@@ -7,6 +7,7 @@ export default function DestacadosSection() {
         limit={12}
         title="Destacados"
         showViewAll={true}
+        onlyFeatured={true}
       />
     </section>
   );

@@ -11,13 +11,15 @@ interface InmueblesGridProps {
   showTitle?: boolean;
   title?: string;
   showViewAll?: boolean;
+  onlyFeatured?: boolean;
 }
 
 export default function InmueblesGrid({ 
   limit, 
   showTitle = true, 
   title = "Propiedades",
-  showViewAll = false 
+  showViewAll = false,
+  onlyFeatured = false
 }: InmueblesGridProps) {
   const [inmuebles, setInmuebles] = useState<Inmueble[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,8 +33,13 @@ export default function InmueblesGrid({
           throw new Error('Failed to fetch inmuebles');
         }
         const data = await response.json();
+        // Filtrar solo destacados si se especifica
+        let filteredData = data;
+        if (onlyFeatured) {
+          filteredData = data.filter((inmueble: Inmueble) => inmueble.destacado === true);
+        }
         // Aplicar límite si se especifica
-        const inmueblesData = limit ? data.slice(0, limit) : data;
+        const inmueblesData = limit ? filteredData.slice(0, limit) : filteredData;
         setInmuebles(inmueblesData);
         console.log('Inmuebles data from API:', data);
       } catch (error) {
@@ -40,7 +47,12 @@ export default function InmueblesGrid({
         // Fallback a mock data si la API falla
         try {
           const mockData = await ApiService.getInmuebles();
-          const inmueblesData = limit ? mockData.slice(0, limit) : mockData;
+          // Filtrar solo destacados si se especifica
+          let filteredMockData = mockData;
+          if (onlyFeatured) {
+            filteredMockData = mockData.filter((inmueble: Inmueble) => inmueble.destacado === true);
+          }
+          const inmueblesData = limit ? filteredMockData.slice(0, limit) : filteredMockData;
           setInmuebles(inmueblesData);
         } catch (mockError) {
           console.error('Error with mock data too:', mockError);
@@ -51,7 +63,7 @@ export default function InmueblesGrid({
     };
 
     fetchInmuebles();
-  }, [limit]);
+  }, [limit, onlyFeatured]);
 
   if (loading) {
     return (
