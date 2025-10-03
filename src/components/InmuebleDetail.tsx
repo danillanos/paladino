@@ -410,9 +410,6 @@ Gracias.`;
                 >
                   Solicitar información
                 </Link>
-                <button className="w-full border border-green-600 text-green-600 py-3 px-4 rounded-md hover:bg-green-50 transition-colors font-semibold">
-                  Agendar visita
-                </button>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-200">
                 {inmueble.contacto && (

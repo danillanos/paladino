@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Emprendimiento } from '@/types';
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
@@ -96,6 +97,27 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
       return (descripcion as unknown as Record<string, unknown>).contenido as string || 'Descripción no disponible';
     }
     return 'Descripción no disponible';
+  };
+
+  const generateContactMessage = () => {
+    const precioTexto = getPrecioTexto();
+    const descripcionTexto = getDescripcionContenido();
+    const ubicacion = emprendimiento.ubicacion_avanzada 
+      ? `${emprendimiento.ubicacion_avanzada.localidad}, ${emprendimiento.ubicacion_avanzada.direccion}`
+      : 'Villa Carlos Paz';
+    
+    return `Hola,
+
+Quiero más información del emprendimiento:
+
+- Nombre: ${emprendimiento.nombre}
+- Precio: ${precioTexto}
+- Ubicación: ${ubicacion}
+- Descripción: ${descripcionTexto}
+
+Por favor, contactarme para coordinar una visita o brindarme más detalles.
+
+Gracias.`;
   };
 
   return (
@@ -289,12 +311,12 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
                 ¿Te interesa este emprendimiento?
               </h3>
               <div className="space-y-3">
-                <button className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-semibold">
+                <Link 
+                  href={`/contacto?mensaje=${encodeURIComponent(generateContactMessage())}`}
+                  className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-semibold text-center block"
+                >
                   Solicitar información
-                </button>
-                <button className="w-full border border-green-600 text-green-600 py-3 px-4 rounded-md hover:bg-green-50 transition-colors font-semibold">
-                  Agendar visita
-                </button>
+                </Link>
               </div>
               <div className="mt-4 pt-4 border-t border-green-200">
                 <p className="text-sm text-gray-600">
