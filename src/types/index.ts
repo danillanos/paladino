@@ -45,7 +45,7 @@ export interface Inmueble {
   direccion: string | null;
   localidad: string | null;
   cochera: string | null;
-  operacion: {
+  operacion: string | {
     nombre: string;
   } | null;
   ubicacion: string | null;
