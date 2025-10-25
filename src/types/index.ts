@@ -485,4 +485,63 @@ export interface CompanyImage {
   provider_metadata: unknown;
   created_at: string;
   updated_at: string;
+}
+
+// Novedades Types
+export interface NovedadImagen {
+  id: number;
+  name: string;
+  alternativeText: string;
+  caption: string;
+  width: number;
+  height: number;
+  formats: {
+    small?: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+    thumbnail?: {
+      ext: string;
+      url: string;
+      hash: string;
+      mime: string;
+      name: string;
+      path: string | null;
+      size: number;
+      width: number;
+      height: number;
+    };
+  };
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: unknown;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Novedad {
+  id: number;
+  titulo: string;
+  slug: string;
+  bajada: string;
+  contenido: string;
+  fecha_publicacion: string;
+  destacado: boolean;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+  portada: NovedadImagen;
+  galeria: NovedadImagen[];
 } 

@@ -1,4 +1,4 @@
-import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento, Obra, CompanyDetail } from '@/types';
+import { Inmueble, Destacado, Zona, Estado, ApiResponse, SiteConfiguration, Emprendimiento, Obra, CompanyDetail, Novedad } from '@/types';
 
 // API configuration - you can change this to your actual API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://paladinopropiedades.com.ar';
@@ -809,6 +809,50 @@ export class ApiService {
     } catch (error) {
       console.error('Error fetching company detail:', error);
       throw error;
+    }
+  }
+
+  // Get novedades (news) from the API
+  static async getNews(): Promise<Novedad[]> {
+    try {
+      // Use the specific API endpoint for novedades
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await globalThis.fetch('https://api.paladinopropiedades.com.ar/novedades', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: controller.signal,
+      });
+      
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorMessage = `Novedades API not available (${response.status})`;
+        console.warn(errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('Successfully fetched novedades');
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          console.error('Request timeout for novedades');
+        } else if (error.message.includes('Failed to fetch')) {
+          console.error('Network error or CORS issue for novedades');
+        } else {
+          console.error('Error fetching novedades:', error.message);
+        }
+      } else {
+        console.error('Unknown error fetching novedades:', error);
+      }
+      
+      // Return empty array if novedades cannot be fetched
+      console.log('Falling back to empty novedades list...');
+      return [];
     }
   }
 } 
