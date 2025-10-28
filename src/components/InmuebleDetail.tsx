@@ -81,7 +81,7 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
     
     return `Hola,
 
-Quiero más información del inmueble:
+Quiero más información del inmueble: ${inmueble.slug}
 
 - Tipo: ${tipo}
 - Operación: ${operacion}
