@@ -30,7 +30,7 @@ export async function GET() {
       allConfigured: Object.values(envCheck).every(Boolean)
     });
 
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Error verificando variables de entorno' },
       { status: 500 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ApiService } from '@/services/api';
@@ -10,7 +10,6 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function NovedadDetailContent() {
   const params = useParams();
-  const router = useRouter();
   const [novedad, setNovedad] = useState<Novedad | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -156,29 +155,6 @@ export default function NovedadDetailContent() {
         </div>
       </section>
 
-      {/* Gallery */}
-      {novedad.galeria && novedad.galeria.length > 0 && (
-        <section className="bg-gray-50 py-12">
-          <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Galería de Imágenes
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {novedad.galeria.map((imagen, index) => (
-                <div key={index} className="relative h-64 w-full rounded-lg overflow-hidden">
-                  <Image
-                    src={`https://api.paladinopropiedades.com.ar${imagen.url}`}
-                    alt={imagen.alternativeText || `Imagen ${index + 1}`}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Navigation */}
       <section className="bg-white border-t">
