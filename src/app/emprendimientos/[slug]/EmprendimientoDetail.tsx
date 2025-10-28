@@ -108,7 +108,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
     
     return `Hola,
 
-Quiero más información del emprendimiento:
+Quiero más información del emprendimiento: ${emprendimiento.slug}
 
 - Nombre: ${emprendimiento.nombre}
 - Precio: ${precioTexto}

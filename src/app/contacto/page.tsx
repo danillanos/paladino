@@ -361,7 +361,7 @@ function ContactoContent() {
                     >
                       <option value="consulta">Consulta general</option>
                       <option value="venta">Venta de propiedad</option>
-                      <option value="alquiler">Alquiler de propiedad</option>
+                      <option value="alquilar">Alquiler de propiedad</option>
                       <option value="tasacion">Tasación</option>
                       <option value="otro">Otro</option>
                     </select>

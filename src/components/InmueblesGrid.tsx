@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { ApiService } from '@/services/api';
 import { Inmueble } from '@/types';
 
@@ -23,6 +24,51 @@ export default function InmueblesGrid({
 }: InmueblesGridProps) {
   const [inmuebles, setInmuebles] = useState<Inmueble[]>([]);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+
+  // Función para mapear parámetros de URL a valores de base de datos
+  const mapOperacionParam = (operacionParam: string) => {
+    const mapping: { [key: string]: string } = {
+      'comprar': 'venta',
+      'alquilar': 'alquiler'
+    };
+    return mapping[operacionParam.toLowerCase()] || operacionParam;
+  };
+
+  // Función para aplicar filtros basados en parámetros de URL
+  const applyFilters = (data: Inmueble[]) => {
+    let filteredData = [...data];
+
+    // Filtro por búsqueda (search)
+    const searchQuery = searchParams.get('search');
+    if (searchQuery) {
+      filteredData = filteredData.filter((inmueble: Inmueble) => 
+        inmueble.nombre.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Filtro por tipo
+    const tipoQuery = searchParams.get('tipo');
+    if (tipoQuery) {
+      filteredData = filteredData.filter((inmueble: Inmueble) => 
+        inmueble.tipo?.nombre?.toLowerCase().includes(tipoQuery.toLowerCase())
+      );
+    }
+
+    // Filtro por operación
+    const operacionQuery = searchParams.get('operacion');
+    if (operacionQuery) {
+      const mappedOperacion = mapOperacionParam(operacionQuery);
+      filteredData = filteredData.filter((inmueble: Inmueble) => {
+        const operacionValue = typeof inmueble.operacion === 'string' 
+          ? inmueble.operacion 
+          : inmueble.operacion?.nombre;
+        return operacionValue?.toLowerCase().includes(mappedOperacion.toLowerCase());
+      });
+    }
+
+    return filteredData;
+  };
 
   useEffect(() => {
     const fetchInmuebles = async () => {
@@ -33,11 +79,15 @@ export default function InmueblesGrid({
           throw new Error('Failed to fetch inmuebles');
         }
         const data = await response.json();
+        
+        // Aplicar filtros basados en parámetros de URL
+        let filteredData = applyFilters(data);
+        
         // Filtrar solo destacados si se especifica
-        let filteredData = data;
         if (onlyFeatured) {
-          filteredData = data.filter((inmueble: Inmueble) => inmueble.destacado === true);
+          filteredData = filteredData.filter((inmueble: Inmueble) => inmueble.destacado === true);
         }
+        
         // Aplicar límite si se especifica
         const inmueblesData = limit ? filteredData.slice(0, limit) : filteredData;
         setInmuebles(inmueblesData);
@@ -47,11 +97,15 @@ export default function InmueblesGrid({
         // Fallback a mock data si la API falla
         try {
           const mockData = await ApiService.getInmuebles();
+          
+          // Aplicar filtros basados en parámetros de URL
+          let filteredMockData = applyFilters(mockData);
+          
           // Filtrar solo destacados si se especifica
-          let filteredMockData = mockData;
           if (onlyFeatured) {
-            filteredMockData = mockData.filter((inmueble: Inmueble) => inmueble.destacado === true);
+            filteredMockData = filteredMockData.filter((inmueble: Inmueble) => inmueble.destacado === true);
           }
+          
           const inmueblesData = limit ? filteredMockData.slice(0, limit) : filteredMockData;
           setInmuebles(inmueblesData);
         } catch (mockError) {
@@ -63,7 +117,26 @@ export default function InmueblesGrid({
     };
 
     fetchInmuebles();
-  }, [limit, onlyFeatured]);
+  }, [limit, onlyFeatured, searchParams]);
+
+  // Función para mostrar filtros aplicados
+  const getActiveFilters = () => {
+    const filters = [];
+    const searchQuery = searchParams.get('search');
+    const tipoQuery = searchParams.get('tipo');
+    const operacionQuery = searchParams.get('operacion');
+
+    if (searchQuery) filters.push(`Búsqueda: "${searchQuery}"`);
+    if (tipoQuery) filters.push(`Tipo: "${tipoQuery}"`);
+    if (operacionQuery) {
+      const mappedOperacion = mapOperacionParam(operacionQuery);
+      filters.push(`Operación: "${mappedOperacion}"`);
+    }
+
+    return filters;
+  };
+
+  const activeFilters = getActiveFilters();
 
   if (loading) {
     return (
@@ -86,9 +159,23 @@ export default function InmueblesGrid({
     return (
       <div className="max-w-6xl mx-auto px-4">
         {showTitle && (
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            {title}
-          </h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              {title}
+            </h2>
+            {activeFilters.length > 0 && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
+                <p className="text-sm text-blue-800 font-medium mb-2">Filtros aplicados:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {activeFilters.map((filter, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                      {filter}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         )}
         <div className="text-center py-12">
           <p className="text-gray-600 text-lg">No se encontraron propiedades</p>
@@ -100,9 +187,23 @@ export default function InmueblesGrid({
   return (
     <div className="max-w-6xl mx-auto px-4">
       {showTitle && (
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          {title}
-        </h2>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            {title}
+          </h2>
+          {activeFilters.length > 0 && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
+              <p className="text-sm text-blue-800 font-medium mb-2">Filtros aplicados:</p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {activeFilters.map((filter, index) => (
+                  <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    {filter}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

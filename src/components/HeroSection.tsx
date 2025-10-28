@@ -12,6 +12,13 @@ export default function HeroSection() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Si está seleccionado emprendimientos, navegar directamente
+    if (selectedOperacion === 'emprendimientos') {
+      router.push('/emprendimientos');
+      return;
+    }
+    
     const params = new URLSearchParams();
     
     if (searchQuery.trim()) {
@@ -23,7 +30,7 @@ export default function HeroSection() {
     if (selectedTipo) {
       params.append('tipo', selectedTipo);
     }
-    if (selectedOperacion) {
+    if (selectedOperacion && selectedOperacion !== 'emprendimientos') {
       params.append('operacion', selectedOperacion);
     }
 
@@ -91,47 +98,59 @@ export default function HeroSection() {
 
               {/* Search Form */}
               <form onSubmit={handleSearch} className="p-4">
-                <div className="flex flex-col md:flex-row gap-2">
-                  {/* Location Input */}
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      placeholder="¿Que propiedad estas buscando?"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
-                    />
-                  </div>
-                  
-                  {/* Property Type */}
-                  <div className="flex-1">
-                    <select
-                      value={selectedTipo}
-                      onChange={(e) => setSelectedTipo(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
-                    >
-                      <option value="">Tipo de propiedad</option>
-                      <option value="Departamento">Departamento</option>
-                      <option value="Casa">Casa</option>
-                      <option value="Casaquinta">Casaquinta</option>
-                      <option value="Casa Quinta">Casa Quinta</option>
-                      <option value="Terreno">Terreno</option>
-                      <option value="Monoambiente">Monoambiente</option>
-                    </select>
-                  </div>
-                  
-                  {/* Search Button */}
-                  <div>
+                {selectedOperacion === 'emprendimientos' ? (
+                  <div className="text-center py-8">
+                    <p className="text-gray-600 mb-4">Explora nuestros emprendimientos disponibles</p>
                     <button
                       type="submit"
-                      className="w-full md:w-auto bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors font-semibold"
+                      className="w-full bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors font-semibold"
                     >
-                      <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
+                      Ver Emprendimientos
                     </button>
                   </div>
-                </div>
+                ) : (
+                  <div className="flex flex-col md:flex-row gap-2">
+                    {/* Location Input */}
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        placeholder="¿Que propiedad estas buscando?"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                      />
+                    </div>
+                    
+                    {/* Property Type */}
+                    <div className="flex-1">
+                      <select
+                        value={selectedTipo}
+                        onChange={(e) => setSelectedTipo(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                      >
+                        <option value="">Tipo de propiedad</option>
+                        <option value="Departamento">Departamento</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Casaquinta">Casaquinta</option>
+                        <option value="Casa Quinta">Casa Quinta</option>
+                        <option value="Terreno">Terreno</option>
+                        <option value="Monoambiente">Monoambiente</option>
+                      </select>
+                    </div>
+                    
+                    {/* Search Button */}
+                    <div>
+                      <button
+                        type="submit"
+                        className="w-full md:w-auto bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors font-semibold"
+                      >
+                        <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </form>
             </div>
           </div>
