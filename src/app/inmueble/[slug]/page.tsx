@@ -18,8 +18,8 @@ export default function InmuebleDetailPage() {
     const fetchInmueble = async () => {
       try {
         setLoading(true);
-        const id = parseInt(params.id as string);
-        const data = await ApiService.getInmuebleById(id);
+        const slug = params.slug as string;
+        const data = await ApiService.getInmuebleBySlug(slug);
         
         if (data) {
           setInmueble(data);
@@ -35,10 +35,10 @@ export default function InmuebleDetailPage() {
       }
     };
 
-    if (params.id) {
+    if (params.slug) {
       fetchInmueble();
     }
-  }, [params.id]);
+  }, [params.slug]);
 
   if (loading) {
     return (

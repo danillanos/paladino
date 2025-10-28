@@ -86,7 +86,7 @@ export default function PropertyCard({ property, isDestacado = false }: Property
         </div>
         
         <Link
-          href={`/inmueble/${property.id}`}
+          href={`/inmueble/${property.slug}`}
           className="block w-full bg-green-600 text-white text-center py-3 px-4 rounded-lg hover:bg-green-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
         >
           Ver más detalles

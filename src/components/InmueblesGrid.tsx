@@ -123,7 +123,7 @@ export default function InmueblesGrid({
           return (
             <Link
               key={inmueble.id}
-              href={`/inmueble/${inmueble.id}`}
+              href={`/inmueble/${inmueble.slug}`}
               className="group block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden"
             >
               {/* Image */}
