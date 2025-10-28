@@ -20,7 +20,7 @@ export default function NovedadDetailContent() {
       try {
         setLoading(true);
         const novedades = await ApiService.getNews();
-        const foundNovedad = novedades.find(n => n.id.toString() === params.slug);
+        const foundNovedad = novedades.find(n => n.id.toString() === params.id);
         
         if (foundNovedad) {
           setNovedad(foundNovedad);
@@ -35,10 +35,10 @@ export default function NovedadDetailContent() {
       }
     };
 
-    if (params.slug) {
+    if (params.id) {
       fetchNovedad();
     }
-  }, [params.slug]);
+  }, [params.id]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -534,14 +534,12 @@ export interface NovedadImagen {
 export interface Novedad {
   id: number;
   titulo: string;
-  slug: string;
-  bajada: string;
-  contenido: string;
+  descripcion: string;
+  contenido: string | null;
   fecha_publicacion: string;
   destacado: boolean;
   published_at: string;
   created_at: string;
   updated_at: string;
-  portada: NovedadImagen;
-  galeria: NovedadImagen[];
+  imagen_destacada: NovedadImagen;
 } 

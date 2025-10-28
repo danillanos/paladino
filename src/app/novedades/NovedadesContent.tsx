@@ -104,8 +104,8 @@ export default function NovedadesContent() {
                   {/* Image */}
                   <div className="relative h-48 w-full">
                     <Image
-                      src={`https://api.paladinopropiedades.com.ar${novedad.portada.url}`}
-                      alt={novedad.portada.alternativeText || novedad.titulo}
+                      src={`https://api.paladinopropiedades.com.ar${novedad.imagen_destacada.url}`}
+                      alt={novedad.imagen_destacada.alternativeText || novedad.titulo}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -125,11 +125,11 @@ export default function NovedadesContent() {
                     </h2>
                     
                     <p className="text-gray-600 mb-4 line-clamp-3">
-                      {novedad.bajada}
+                      {novedad.descripcion}
                     </p>
 
                     <Link
-                      href={`/novedades/${novedad.slug}`}
+                      href={`/novedades/${novedad.id}`}
                       className="inline-flex items-center text-green-600 hover:text-green-700 font-medium transition-colors"
                     >
                       Leer más
