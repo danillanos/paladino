@@ -144,10 +144,14 @@ export default function NovedadDetailContent() {
       <section className="bg-white">
         <div className="max-w-4xl mx-auto px-4 pb-12">
           <div className="prose prose-lg max-w-none">
-            <div 
-              className="text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: novedad.contenido }}
-            />
+            {novedad.contenido ? (
+              <div 
+                className="text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: novedad.contenido }}
+              />
+            ) : (
+              <p className="text-gray-500 italic">No hay contenido disponible para esta novedad.</p>
+            )}
           </div>
         </div>
       </section>
