@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Novedad } from '@/types';
 import { ApiService } from '@/services/api';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -110,12 +111,14 @@ export default function NovedadDetailPage() {
         {/* Imagen destacada */}
         {novedad.imagen_destacada && novedad.imagen_destacada.url && (
           <div className="mb-8">
-            <img
+            <Image
               src={novedad.imagen_destacada.url.startsWith('http') 
                 ? novedad.imagen_destacada.url 
                 : `https://api.paladinopropiedades.com.ar${novedad.imagen_destacada.url}`
               }
               alt={novedad.imagen_destacada.alternativeText || novedad.titulo}
+              width={800}
+              height={400}
               className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg"
               onError={(e) => {
                 console.error('Error loading image:', e);
