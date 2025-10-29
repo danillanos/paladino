@@ -19,7 +19,7 @@ export default function InmueblesPageContent() {
         </div>
       }>
         <InmueblesGrid 
-          title="Todas las Propiedades"
+          title="Listado de Propiedades"
           showViewAll={false}
         />
       </Suspense>

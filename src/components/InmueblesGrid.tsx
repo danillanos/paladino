@@ -119,22 +119,50 @@ export default function InmueblesGrid({
     fetchInmuebles();
   }, [limit, onlyFeatured, searchParams]);
 
-  // Función para mostrar filtros aplicados
+  // Función para obtener filtros activos
   const getActiveFilters = () => {
-    const filters = [];
-    const searchQuery = searchParams.get('search');
-    const tipoQuery = searchParams.get('tipo');
-    const operacionQuery = searchParams.get('operacion');
-
-    if (searchQuery) filters.push(`Búsqueda: "${searchQuery}"`);
-    if (tipoQuery) filters.push(`Tipo: "${tipoQuery}"`);
-    if (operacionQuery) {
-      const mappedOperacion = mapOperacionParam(operacionQuery);
-      filters.push(`Operación: "${mappedOperacion}"`);
-    }
-
-    return filters;
+    return {
+      search: searchParams.get('search') || '',
+      tipo: searchParams.get('tipo') || '',
+      operacion: searchParams.get('operacion') || ''
+    };
   };
+
+  // Función para actualizar filtros
+  const updateFilters = (filterType: string, value: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    
+    if (value === '') {
+      newParams.delete(filterType);
+    } else {
+      newParams.set(filterType, value);
+    }
+    
+    const queryString = newParams.toString();
+    window.location.href = `/inmuebles${queryString ? `?${queryString}` : ''}`;
+  };
+
+  // Función para limpiar todos los filtros
+  const clearAllFilters = () => {
+    window.location.href = '/inmuebles';
+  };
+
+  // Opciones para los selects
+  const tipoOptions = [
+    { value: '', label: 'Todos los tipos' },
+    { value: 'casa', label: 'Casa' },
+    { value: 'departamento', label: 'Departamento' },
+    { value: 'casa-quinta', label: 'Casa Quinta' },
+    { value: 'terreno', label: 'Terreno' },
+    { value: 'local', label: 'Local' },
+    { value: 'oficina', label: 'Oficina' }
+  ];
+
+  const operacionOptions = [
+    { value: '', label: 'Todas las operaciones' },
+    { value: 'comprar', label: 'Comprar' },
+    { value: 'alquilar', label: 'Alquilar' }
+  ];
 
   const activeFilters = getActiveFilters();
 
@@ -163,18 +191,79 @@ export default function InmueblesGrid({
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               {title}
             </h2>
-            {activeFilters.length > 0 && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
-                <p className="text-sm text-blue-800 font-medium mb-2">Filtros aplicados:</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {activeFilters.map((filter, index) => (
-                    <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                      {filter}
-                    </span>
-                  ))}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h3>
+                    <p className="text-sm text-gray-500">Refina tu búsqueda de propiedades</p>
+                  </div>
+                </div>
+                <button
+                  onClick={clearAllFilters}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  Ver todas
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Filtro de búsqueda */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Búsqueda
+                  </label>
+                  <input
+                    type="text"
+                    value={activeFilters.search}
+                    onChange={(e) => updateFilters('search', e.target.value)}
+                    placeholder="Buscar por nombre, zona..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+
+                {/* Filtro de tipo */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tipo de propiedad
+                  </label>
+                  <select
+                    value={activeFilters.tipo}
+                    onChange={(e) => updateFilters('tipo', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  >
+                    {tipoOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Filtro de operación */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Operación
+                  </label>
+                  <select
+                    value={activeFilters.operacion}
+                    onChange={(e) => updateFilters('operacion', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  >
+                    {operacionOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         )}
         <div className="text-center py-12">
@@ -191,18 +280,79 @@ export default function InmueblesGrid({
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             {title}
           </h2>
-          {activeFilters.length > 0 && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
-              <p className="text-sm text-blue-800 font-medium mb-2">Filtros aplicados:</p>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {activeFilters.map((filter, index) => (
-                  <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                    {filter}
-                  </span>
-                ))}
+          <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h3>
+                  <p className="text-sm text-gray-500">Refina tu búsqueda de propiedades</p>
+                </div>
+              </div>
+              <button
+                onClick={clearAllFilters}
+                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Ver todas
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Filtro de búsqueda */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Búsqueda
+                </label>
+                <input
+                  type="text"
+                  value={activeFilters.search}
+                  onChange={(e) => updateFilters('search', e.target.value)}
+                  placeholder="Buscar por nombre, zona..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                />
+              </div>
+
+              {/* Filtro de tipo */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tipo de propiedad
+                </label>
+                <select
+                  value={activeFilters.tipo}
+                  onChange={(e) => updateFilters('tipo', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                >
+                  {tipoOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Filtro de operación */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Operación
+                </label>
+                <select
+                  value={activeFilters.operacion}
+                  onChange={(e) => updateFilters('operacion', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                >
+                  {operacionOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-          )}
+          </div>
         </div>
       )}
       
