@@ -1,5 +1,29 @@
 import { NextResponse } from 'next/server';
 
+// Tipos para los datos de la API
+interface InmuebleSitemap {
+  slug: string;
+  updated_at?: string;
+}
+
+interface EmprendimientoSitemap {
+  slug: string;
+  updated_at?: string;
+}
+
+interface NovedadSitemap {
+  id: number;
+  updated_at?: string;
+}
+
+// Tipo para las páginas del sitemap
+interface SitemapPage {
+  url: string;
+  lastmod: string;
+  changefreq: string;
+  priority: string;
+}
+
 export async function GET(request: Request) {
   // Detectar si estamos en desarrollo local o producción
   const host = request.headers.get('host') || '';
@@ -7,7 +31,7 @@ export async function GET(request: Request) {
   const baseUrl = isLocal ? `http://${host}` : 'https://paladinopropiedades.com.ar';
   
   // Páginas estáticas principales
-  const staticPages = [
+  const staticPages: SitemapPage[] = [
     {
       url: `${baseUrl}/`,
       lastmod: new Date().toISOString().split('T')[0],
@@ -47,7 +71,7 @@ export async function GET(request: Request) {
   ];
 
   // Obtener propiedades dinámicamente
-  let inmueblesPages = [];
+  let inmueblesPages: SitemapPage[] = [];
   
   if (isLocal) {
     // En local, usar datos mock
@@ -76,8 +100,8 @@ export async function GET(request: Request) {
     try {
       const inmueblesResponse = await fetch('https://api.paladinopropiedades.com.ar/inmuebles');
       if (inmueblesResponse.ok) {
-        const inmuebles = await inmueblesResponse.json();
-        inmueblesPages = inmuebles.map((inmueble: any) => ({
+        const inmuebles: InmuebleSitemap[] = await inmueblesResponse.json();
+        inmueblesPages = inmuebles.map((inmueble) => ({
           url: `${baseUrl}/inmueble/${inmueble.slug}`,
           lastmod: inmueble.updated_at ? new Date(inmueble.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
           changefreq: 'weekly',
@@ -90,7 +114,7 @@ export async function GET(request: Request) {
   }
 
   // Obtener emprendimientos dinámicamente
-  let emprendimientosPages = [];
+  let emprendimientosPages: SitemapPage[] = [];
   
   if (isLocal) {
     // En local, usar datos mock
@@ -119,8 +143,8 @@ export async function GET(request: Request) {
     try {
       const emprendimientosResponse = await fetch('https://api.paladinopropiedades.com.ar/emprendimientos');
       if (emprendimientosResponse.ok) {
-        const emprendimientos = await emprendimientosResponse.json();
-        emprendimientosPages = emprendimientos.map((emprendimiento: any) => ({
+        const emprendimientos: EmprendimientoSitemap[] = await emprendimientosResponse.json();
+        emprendimientosPages = emprendimientos.map((emprendimiento) => ({
           url: `${baseUrl}/emprendimientos/${emprendimiento.slug}`,
           lastmod: emprendimiento.updated_at ? new Date(emprendimiento.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
           changefreq: 'weekly',
@@ -133,7 +157,7 @@ export async function GET(request: Request) {
   }
 
   // Obtener novedades dinámicamente
-  let novedadesPages = [];
+  let novedadesPages: SitemapPage[] = [];
   
   if (isLocal) {
     // En local, usar datos mock
@@ -156,8 +180,8 @@ export async function GET(request: Request) {
     try {
       const novedadesResponse = await fetch('https://api.paladinopropiedades.com.ar/novedades');
       if (novedadesResponse.ok) {
-        const novedades = await novedadesResponse.json();
-        novedadesPages = novedades.map((novedad: any) => ({
+        const novedades: NovedadSitemap[] = await novedadesResponse.json();
+        novedadesPages = novedades.map((novedad) => ({
           url: `${baseUrl}/novedades/${novedad.id}`,
           lastmod: novedad.updated_at ? new Date(novedad.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
           changefreq: 'weekly',

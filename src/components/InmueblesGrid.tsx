@@ -35,42 +35,42 @@ export default function InmueblesGrid({
     return mapping[operacionParam.toLowerCase()] || operacionParam;
   };
 
-  // Función para aplicar filtros basados en parámetros de URL
-  const applyFilters = (data: Inmueble[]) => {
-    let filteredData = [...data];
-
-    // Filtro por búsqueda (search)
-    const searchQuery = searchParams.get('search');
-    if (searchQuery) {
-      filteredData = filteredData.filter((inmueble: Inmueble) => 
-        inmueble.nombre.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Filtro por tipo
-    const tipoQuery = searchParams.get('tipo');
-    if (tipoQuery) {
-      filteredData = filteredData.filter((inmueble: Inmueble) => 
-        inmueble.tipo?.nombre?.toLowerCase().includes(tipoQuery.toLowerCase())
-      );
-    }
-
-    // Filtro por operación
-    const operacionQuery = searchParams.get('operacion');
-    if (operacionQuery) {
-      const mappedOperacion = mapOperacionParam(operacionQuery);
-      filteredData = filteredData.filter((inmueble: Inmueble) => {
-        const operacionValue = typeof inmueble.operacion === 'string' 
-          ? inmueble.operacion 
-          : inmueble.operacion?.nombre;
-        return operacionValue?.toLowerCase().includes(mappedOperacion.toLowerCase());
-      });
-    }
-
-    return filteredData;
-  };
-
   useEffect(() => {
+    // Función para aplicar filtros basados en parámetros de URL
+    const applyFilters = (data: Inmueble[]) => {
+      let filteredData = [...data];
+
+      // Filtro por búsqueda (search)
+      const searchQuery = searchParams.get('search');
+      if (searchQuery) {
+        filteredData = filteredData.filter((inmueble: Inmueble) => 
+          inmueble.nombre.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      // Filtro por tipo
+      const tipoQuery = searchParams.get('tipo');
+      if (tipoQuery) {
+        filteredData = filteredData.filter((inmueble: Inmueble) => 
+          inmueble.tipo?.nombre?.toLowerCase().includes(tipoQuery.toLowerCase())
+        );
+      }
+
+      // Filtro por operación
+      const operacionQuery = searchParams.get('operacion');
+      if (operacionQuery) {
+        const mappedOperacion = mapOperacionParam(operacionQuery);
+        filteredData = filteredData.filter((inmueble: Inmueble) => {
+          const operacionValue = typeof inmueble.operacion === 'string' 
+            ? inmueble.operacion 
+            : inmueble.operacion?.nombre;
+          return operacionValue?.toLowerCase().includes(mappedOperacion.toLowerCase());
+        });
+      }
+
+      return filteredData;
+    };
+
     const fetchInmuebles = async () => {
       try {
         // Usar la API real de inmuebles
