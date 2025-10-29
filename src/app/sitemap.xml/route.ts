@@ -13,6 +13,8 @@ interface EmprendimientoSitemap {
 
 interface NovedadSitemap {
   id: number;
+  titulo: string;
+  slug: string;
   updated_at?: string;
 }
 
@@ -73,124 +75,56 @@ export async function GET(request: Request) {
   // Obtener propiedades dinámicamente
   let inmueblesPages: SitemapPage[] = [];
   
-  if (isLocal) {
-    // En local, usar datos mock
-    inmueblesPages = [
-      {
-        url: `${baseUrl}/inmueble/casa-villa-carlos-paz-3-dormitorios`,
-        lastmod: new Date().toISOString().split('T')[0],
+  try {
+    const inmueblesResponse = await fetch('https://api.paladinopropiedades.com.ar/inmuebles');
+    if (inmueblesResponse.ok) {
+      const inmuebles: InmuebleSitemap[] = await inmueblesResponse.json();
+      inmueblesPages = inmuebles.map((inmueble) => ({
+        url: `${baseUrl}/inmueble/${inmueble.slug}`,
+        lastmod: inmueble.updated_at ? new Date(inmueble.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         changefreq: 'weekly',
         priority: '0.8'
-      },
-      {
-        url: `${baseUrl}/inmueble/departamento-centro-2-ambientes`,
-        lastmod: new Date().toISOString().split('T')[0],
-        changefreq: 'weekly',
-        priority: '0.8'
-      },
-      {
-        url: `${baseUrl}/inmueble/casa-quinta-sierras-4-dormitorios`,
-        lastmod: new Date().toISOString().split('T')[0],
-        changefreq: 'weekly',
-        priority: '0.8'
-      }
-    ];
-  } else {
-    // En producción, obtener datos reales
-    try {
-      const inmueblesResponse = await fetch('https://api.paladinopropiedades.com.ar/inmuebles');
-      if (inmueblesResponse.ok) {
-        const inmuebles: InmuebleSitemap[] = await inmueblesResponse.json();
-        inmueblesPages = inmuebles.map((inmueble) => ({
-          url: `${baseUrl}/inmueble/${inmueble.slug}`,
-          lastmod: inmueble.updated_at ? new Date(inmueble.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-          changefreq: 'weekly',
-          priority: '0.8'
-        }));
-      }
-    } catch (error) {
-      console.error('Error fetching inmuebles for sitemap:', error);
+      }));
     }
+  } catch (error) {
+    console.error('Error fetching inmuebles for sitemap:', error);
   }
 
   // Obtener emprendimientos dinámicamente
   let emprendimientosPages: SitemapPage[] = [];
   
-  if (isLocal) {
-    // En local, usar datos mock
-    emprendimientosPages = [
-      {
-        url: `${baseUrl}/emprendimientos/complejo-goethe`,
-        lastmod: new Date().toISOString().split('T')[0],
+  try {
+    const emprendimientosResponse = await fetch('https://api.paladinopropiedades.com.ar/emprendimientos');
+    if (emprendimientosResponse.ok) {
+      const emprendimientos: EmprendimientoSitemap[] = await emprendimientosResponse.json();
+      emprendimientosPages = emprendimientos.map((emprendimiento) => ({
+        url: `${baseUrl}/emprendimientos/${emprendimiento.slug}`,
+        lastmod: emprendimiento.updated_at ? new Date(emprendimiento.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         changefreq: 'weekly',
         priority: '0.7'
-      },
-      {
-        url: `${baseUrl}/emprendimientos/barrio-cerrado-villa-carlos-paz`,
-        lastmod: new Date().toISOString().split('T')[0],
-        changefreq: 'weekly',
-        priority: '0.7'
-      },
-      {
-        url: `${baseUrl}/emprendimientos/condominio-montanas`,
-        lastmod: new Date().toISOString().split('T')[0],
-        changefreq: 'weekly',
-        priority: '0.7'
-      }
-    ];
-  } else {
-    // En producción, obtener datos reales
-    try {
-      const emprendimientosResponse = await fetch('https://api.paladinopropiedades.com.ar/emprendimientos');
-      if (emprendimientosResponse.ok) {
-        const emprendimientos: EmprendimientoSitemap[] = await emprendimientosResponse.json();
-        emprendimientosPages = emprendimientos.map((emprendimiento) => ({
-          url: `${baseUrl}/emprendimientos/${emprendimiento.slug}`,
-          lastmod: emprendimiento.updated_at ? new Date(emprendimiento.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-          changefreq: 'weekly',
-          priority: '0.7'
-        }));
-      }
-    } catch (error) {
-      console.error('Error fetching emprendimientos for sitemap:', error);
+      }));
     }
+  } catch (error) {
+    console.error('Error fetching emprendimientos for sitemap:', error);
   }
 
   // Obtener novedades dinámicamente
   let novedadesPages: SitemapPage[] = [];
   
-  if (isLocal) {
-    // En local, usar datos mock
-    novedadesPages = [
-      {
-        url: `${baseUrl}/novedades/expo-2025`,
-        lastmod: new Date().toISOString().split('T')[0],
+  // Obtener novedades de la API real
+  try {
+    const novedadesResponse = await fetch('https://api.paladinopropiedades.com.ar/novedades');
+    if (novedadesResponse.ok) {
+      const novedades: NovedadSitemap[] = await novedadesResponse.json();
+      novedadesPages = novedades.map((novedad) => ({
+        url: `${baseUrl}/novedades/${novedad.slug}`,
+        lastmod: novedad.updated_at ? new Date(novedad.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         changefreq: 'weekly',
         priority: '0.6'
-      },
-      {
-        url: `${baseUrl}/novedades/nuevos-emprendimientos-villa-carlos-paz`,
-        lastmod: new Date().toISOString().split('T')[0],
-        changefreq: 'weekly',
-        priority: '0.6'
-      }
-    ];
-  } else {
-    // En producción, obtener datos reales
-    try {
-      const novedadesResponse = await fetch('https://api.paladinopropiedades.com.ar/novedades');
-      if (novedadesResponse.ok) {
-        const novedades: NovedadSitemap[] = await novedadesResponse.json();
-        novedadesPages = novedades.map((novedad) => ({
-          url: `${baseUrl}/novedades/${novedad.id}`,
-          lastmod: novedad.updated_at ? new Date(novedad.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-          changefreq: 'weekly',
-          priority: '0.6'
-        }));
-      }
-    } catch (error) {
-      console.error('Error fetching novedades for sitemap:', error);
+      }));
     }
+  } catch (error) {
+    console.error('Error fetching novedades for sitemap:', error);
   }
 
   // Combinar todas las páginas

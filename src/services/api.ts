@@ -847,6 +847,54 @@ export class ApiService {
   }
 
   // Get novedades (news) from the API
+  static async getNovedades(): Promise<Novedad[]> {
+    return this.getNews();
+  }
+
+  // Get single novedad by slug
+  static async getNovedadBySlug(slug: string): Promise<Novedad | null> {
+    try {
+      // Intentar primero con filtro directo
+      const encodedSlug = encodeURIComponent(slug);
+      const response = await fetch(`https://api.paladinopropiedades.com.ar/novedades?filters[slug][$eq]=${encodedSlug}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Strapi puede devolver data en un array o en un objeto con 'data'
+        let novedades: Novedad[] = [];
+        if (Array.isArray(data)) {
+          novedades = data;
+        } else if (data.data && Array.isArray(data.data)) {
+          novedades = data.data;
+        } else if (data.data && !Array.isArray(data.data)) {
+          novedades = [data.data];
+        }
+        
+        if (novedades.length > 0) {
+          return novedades[0];
+        }
+      }
+      
+      // Fallback: obtener todas las novedades y buscar por slug
+      console.log(`Fallback: searching all novedades for slug: ${slug}`);
+      const allNovedades = await this.getNews();
+      const novedadEncontrada = allNovedades.find(n => 
+        n.slug && (n.slug === slug || n.slug.toLowerCase() === slug.toLowerCase())
+      );
+      
+      if (novedadEncontrada) {
+        return novedadEncontrada;
+      }
+      
+      console.warn(`No novedad found with slug: ${slug}`);
+      return null;
+    } catch (error) {
+      console.error(`Error fetching novedad by slug ${slug}:`, error);
+      return null;
+    }
+  }
+
   static async getNews(): Promise<Novedad[]> {
     try {
       // Use the specific API endpoint for novedades

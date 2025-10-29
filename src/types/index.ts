@@ -534,6 +534,7 @@ export interface NovedadImagen {
 export interface Novedad {
   id: number;
   titulo: string;
+  slug: string;
   descripcion: string;
   contenido: string | null;
   fecha_publicacion: string;

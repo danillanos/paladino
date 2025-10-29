@@ -38,6 +38,7 @@ export default function NovedadesContent() {
     });
   };
 
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -129,7 +130,7 @@ export default function NovedadesContent() {
                     </p>
 
                     <Link
-                      href={`/novedades/${novedad.id}`}
+                      href={`/novedades/${novedad.slug}`}
                       className="inline-flex items-center text-green-600 hover:text-green-700 font-medium transition-colors"
                     >
                       Leer más
