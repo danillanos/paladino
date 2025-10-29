@@ -24,7 +24,7 @@ export default function HomePage() {
               ¿Por qué elegir Paladino Propiedades?
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              Con más de 10 años de experiencia en el mercado inmobiliario de Buenos Aires, 
+              Con más de 10 años de experiencia en el mercado inmobiliario de Villa Carlos Paz, 
               somos tu socio de confianza para encontrar la propiedad perfecta. Nuestro equipo 
               de profesionales especializados te acompaña en cada paso del proceso.
             </p>
@@ -38,7 +38,7 @@ export default function HomePage() {
             </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Experiencia</h3>
                 <p className="text-gray-600">
-                  Más de 10 años en el mercado inmobiliario de Buenos Aires
+                  Más de 10 años en el mercado inmobiliario de Villa Carlos Paz
                 </p>
               </div>
               

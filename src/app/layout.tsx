@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Paladino Propiedades - Inmobiliaria en Buenos Aires",
-  description: "Encuentra tu hogar ideal con Paladino Propiedades. Las mejores propiedades en las zonas más exclusivas de Buenos Aires.",
-  keywords: "inmobiliaria, propiedades, departamentos, casas, venta, alquiler, Buenos Aires, Paladino",
+  title: "Paladino Propiedades - Inmobiliaria en Villa Carlos Paz",
+  description: "Encuentra tu hogar ideal con Paladino Propiedades. Las mejores propiedades en las zonas más exclusivas de Villa Carlos Paz.",
+  keywords: "inmobiliaria, propiedades, departamentos, casas, venta, alquiler, Villa Carlos Paz, Paladino",
   authors: [{ name: "Paladino Propiedades" }],
 };
 

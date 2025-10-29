@@ -259,6 +259,7 @@ export interface SiteConfiguration {
   instagram: string;
   texto_footer: string;
   copy: string;
+  Organizacion?: string | null;
   Logos: {
     id: number;
     Logo_1: LogoImage[];

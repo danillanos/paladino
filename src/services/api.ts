@@ -324,7 +324,14 @@ export class ApiService {
 
       const data = await response.json();
       console.log('Successfully fetched site configuration');
-      return data;
+      
+      // Mapear el campo Organizacion desde la respuesta de la API
+      const mappedData: SiteConfiguration = {
+        ...data,
+        Organizacion: data.Organizacion || data.organizacion || null,
+      };
+      
+      return mappedData;
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
