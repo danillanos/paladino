@@ -59,12 +59,6 @@ export async function GET(request: Request) {
       priority: '0.7'
     },
     {
-      url: `${baseUrl}/zonas`,
-      lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'monthly',
-      priority: '0.6'
-    },
-    {
       url: `${baseUrl}/contacto`,
       lastmod: new Date().toISOString().split('T')[0],
       changefreq: 'weekly',
