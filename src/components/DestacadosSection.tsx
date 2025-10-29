@@ -23,6 +23,7 @@ export default function DestacadosSection() {
           title="Destacados"
           showViewAll={true}
           onlyFeatured={true}
+          showFilters={false}
         />
       </Suspense>
     </section>

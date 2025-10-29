@@ -13,6 +13,7 @@ interface InmueblesGridProps {
   title?: string;
   showViewAll?: boolean;
   onlyFeatured?: boolean;
+  showFilters?: boolean;
 }
 
 export default function InmueblesGrid({ 
@@ -20,7 +21,8 @@ export default function InmueblesGrid({
   showTitle = true, 
   title = "Propiedades",
   showViewAll = false,
-  onlyFeatured = false
+  onlyFeatured = false,
+  showFilters = true
 }: InmueblesGridProps) {
   const [inmuebles, setInmuebles] = useState<Inmueble[]>([]);
   const [loading, setLoading] = useState(true);
@@ -191,7 +193,8 @@ export default function InmueblesGrid({
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               {title}
             </h2>
-            <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
+            {showFilters && (
+              <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 rounded-lg">
@@ -264,6 +267,7 @@ export default function InmueblesGrid({
                 </div>
               </div>
             </div>
+            )}
           </div>
         )}
         <div className="text-center py-12">
@@ -280,7 +284,8 @@ export default function InmueblesGrid({
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             {title}
           </h2>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
+          {showFilters && (
+            <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-blue-100 rounded-lg">
@@ -353,6 +358,7 @@ export default function InmueblesGrid({
               </div>
             </div>
           </div>
+            )}
         </div>
       )}
       
