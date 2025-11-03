@@ -19,6 +19,16 @@ export const metadata: Metadata = {
   description: "Encuentra tu hogar ideal con Paladino Propiedades. Las mejores propiedades en las zonas más exclusivas de Villa Carlos Paz.",
   keywords: "inmobiliaria, propiedades, departamentos, casas, venta, alquiler, Villa Carlos Paz, Paladino",
   authors: [{ name: "Paladino Propiedades" }],
+  icons: {
+    icon: [
+      { url: '/icon.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
