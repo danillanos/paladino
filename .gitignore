@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# MCP server (local development only)
+mcp-server.js
+claude_desktop_config.example.json
