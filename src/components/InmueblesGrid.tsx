@@ -70,6 +70,21 @@ export default function InmueblesGrid({
         });
       }
 
+      // Filtro por habitaciones
+      const habitacionesQuery = searchParams.get('habitaciones');
+      if (habitacionesQuery) {
+        filteredData = filteredData.filter((inmueble: Inmueble) => {
+          if (!inmueble.habitaciones) return false;
+          
+          if (habitacionesQuery === '+4') {
+            return inmueble.habitaciones >= 4;
+          } else {
+            const habitacionesValue = parseInt(habitacionesQuery, 10);
+            return inmueble.habitaciones === habitacionesValue;
+          }
+        });
+      }
+
       return filteredData;
     };
 
@@ -126,7 +141,8 @@ export default function InmueblesGrid({
     return {
       search: searchParams.get('search') || '',
       tipo: searchParams.get('tipo') || '',
-      operacion: searchParams.get('operacion') || ''
+      operacion: searchParams.get('operacion') || '',
+      habitaciones: searchParams.get('habitaciones') || ''
     };
   };
 
@@ -215,7 +231,7 @@ export default function InmueblesGrid({
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Filtro de búsqueda */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -265,6 +281,25 @@ export default function InmueblesGrid({
                     ))}
                   </select>
                 </div>
+
+                {/* Filtro de habitaciones */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Habitaciones
+                  </label>
+                  <select
+                    value={activeFilters.habitaciones}
+                    onChange={(e) => updateFilters('habitaciones', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  >
+                    <option value="">Todas</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="+4">+4</option>
+                  </select>
+                </div>
               </div>
             </div>
             )}
@@ -306,7 +341,7 @@ export default function InmueblesGrid({
               </button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Filtro de búsqueda */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -354,6 +389,25 @@ export default function InmueblesGrid({
                       {option.label}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              {/* Filtro de habitaciones */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Habitaciones
+                </label>
+                <select
+                  value={activeFilters.habitaciones}
+                  onChange={(e) => updateFilters('habitaciones', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                >
+                  <option value="">Todas</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="+4">+4</option>
                 </select>
               </div>
             </div>

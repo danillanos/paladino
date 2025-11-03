@@ -8,6 +8,7 @@ export default function HeroSection() {
   // const [selectedZona, setSelectedZona] = useState(''); // Comentado porque no se usa
   const [selectedTipo, setSelectedTipo] = useState('');
   const [selectedOperacion, setSelectedOperacion] = useState('comprar');
+  const [selectedHabitaciones, setSelectedHabitaciones] = useState('');
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -32,6 +33,9 @@ export default function HeroSection() {
     }
     if (selectedOperacion && selectedOperacion !== 'emprendimientos') {
       params.append('operacion', selectedOperacion);
+    }
+    if (selectedHabitaciones) {
+      params.append('habitaciones', selectedHabitaciones);
     }
 
     const queryString = params.toString();
@@ -135,6 +139,22 @@ export default function HeroSection() {
                         <option value="Casa Quinta">Casa Quinta</option>
                         <option value="Terreno">Terreno</option>
                         <option value="Monoambiente">Monoambiente</option>
+                      </select>
+                    </div>
+                    
+                    {/* Habitaciones */}
+                    <div className="flex-1">
+                      <select
+                        value={selectedHabitaciones}
+                        onChange={(e) => setSelectedHabitaciones(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent text-gray-900"
+                      >
+                        <option value="">Habitaciones</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="+4">+4</option>
                       </select>
                     </div>
                     
