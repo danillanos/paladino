@@ -544,4 +544,5 @@ export interface Novedad {
   created_at: string;
   updated_at: string;
   imagen_destacada: NovedadImagen;
+  galeria?: NovedadImagen[];
 } 
