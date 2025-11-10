@@ -833,7 +833,7 @@ export class ApiService {
 
     if (params?.tipo) {
       filteredInmuebles = filteredInmuebles.filter(inmueble => 
-        inmueble.tipo?.nombre?.toLowerCase().includes(params.tipo!.toLowerCase()) ?? false
+        inmueble.tipo_inmueble?.toLowerCase().includes(params.tipo!.toLowerCase()) ?? false
       );
     }
 

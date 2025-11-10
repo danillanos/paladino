@@ -75,7 +75,7 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
 
   const generateContactMessage = () => {
     const location = getLocationText();
-    const tipo = inmueble.tipo?.nombre || 'Propiedad';
+    const tipo = inmueble.tipo_inmueble || 'Propiedad';
     const operacion = typeof inmueble.operacion === 'string' ? inmueble.operacion : inmueble.operacion?.nombre;
     const precio = inmueble.precio ? `$${inmueble.precio.toLocaleString()}` : 'Consultar precio';
     
@@ -102,7 +102,7 @@ Gracias.`;
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-2">
             <span>{inmueble.estado?.nombre || 'Disponible'}</span>
             <span>•</span>
-            <span>{inmueble.tipo?.nombre || 'Propiedad'}</span>
+            <span>{inmueble.tipo_inmueble || 'Propiedad'}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{inmueble.nombre}</h1>
           <p className="text-lg text-gray-600">{getLocationText()}</p>
@@ -197,7 +197,7 @@ Gracias.`;
                 {formatPrice(inmueble.precio, inmueble.moneda)}
               </div>
               <div className="text-gray-600">
-                {typeof inmueble.operacion === 'string' ? inmueble.operacion : inmueble.operacion?.nombre} • {inmueble.tipo?.nombre || 'Propiedad'}
+                {typeof inmueble.operacion === 'string' ? inmueble.operacion : inmueble.operacion?.nombre} • {inmueble.tipo_inmueble || 'Propiedad'}
               </div>
             </div>
 

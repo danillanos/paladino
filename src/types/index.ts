@@ -8,6 +8,7 @@ export interface Inmueble {
   tipo: {
     nombre: string;
   } | null;
+  tipo_inmueble?: string | null;
   estado: {
     nombre: string;
   } | null;

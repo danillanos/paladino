@@ -54,7 +54,7 @@ export default function InmueblesGrid({
       const tipoQuery = searchParams.get('tipo');
       if (tipoQuery) {
         filteredData = filteredData.filter((inmueble: Inmueble) => 
-          inmueble.tipo?.nombre?.toLowerCase().includes(tipoQuery.toLowerCase())
+          inmueble.tipo_inmueble?.toLowerCase().includes(tipoQuery.toLowerCase())
         );
       }
 
