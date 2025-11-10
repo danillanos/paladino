@@ -23,13 +23,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validar que NEXT_PUBLIC_DEFAULT_EMAIL esté configurado
+    const defaultEmail = process.env.NEXT_PUBLIC_DEFAULT_EMAIL;
+    if (!defaultEmail) {
+      return NextResponse.json(
+        { error: 'NEXT_PUBLIC_DEFAULT_EMAIL no está configurado en las variables de entorno' },
+        { status: 500 }
+      );
+    }
+
     // Obtener configuración del sitio para el logo y email de destino
     const siteConfig = await ApiService.getSiteConfiguration();
     const logoUrl = siteConfig?.Logos?.Logo_2?.[0]?.url 
       ? `https://api.paladinopropiedades.com.ar${siteConfig.Logos.Logo_2[0].url}`
       : 'https://via.placeholder.com/200x80/1e40af/ffffff?text=PALADINO';
     
-    const defaultEmail = 'info@paladinopropiedades.com.ar';
     const receiverEmail = siteConfig?.email_de_contacto || defaultEmail;
     const senderEmail = defaultEmail;
     const emailSubject = siteConfig?.texto_de_contacto_web || 'Nueva consulta desde la web';
