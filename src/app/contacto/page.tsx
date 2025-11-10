@@ -260,7 +260,7 @@ function ContactoContent() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Email</h3>
-                          <p className="text-gray-600">{configuration?.contactos && configuration.contactos.length > 0 ? configuration.contactos[0].email : 'info@paladinopropiedades.com'}</p>
+                          <p className="text-gray-600">{configuration?.email_de_contacto || process.env.NEXT_PUBLIC_DEFAULT_EMAIL || 'info@paladinopropiedades.com.ar'}</p>
                   </div>
                 </div>
                     </>

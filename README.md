@@ -203,7 +203,7 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 
 ## 📞 Contacto
 
-Paladino Propiedades - [info@paladinopropiedades.com](mailto:info@paladinopropiedades.com)
+Paladino Propiedades - [info@paladinopropiedades.com.ar](mailto:info@paladinopropiedades.com.ar)
 
 ---
 

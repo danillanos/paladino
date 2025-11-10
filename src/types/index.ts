@@ -198,7 +198,6 @@ export interface Contacto {
   whatsapp_mensaje: string;
   whatsapp_url: string | null;
   instagram: string;
-  contact_email_receiver: string;
 }
 
 export interface Ubicacion {
@@ -261,6 +260,8 @@ export interface SiteConfiguration {
   copy: string;
   Organizacion?: string | null;
   contact_whastapp_home?: string | null;
+  email_de_contacto?: string | null;
+  texto_de_contacto_web?: string | null;
   Logos: {
     id: number;
     Logo_1: LogoImage[];

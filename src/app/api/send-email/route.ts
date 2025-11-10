@@ -29,8 +29,10 @@ export async function POST(request: NextRequest) {
       ? `https://api.paladinopropiedades.com.ar${siteConfig.Logos.Logo_2[0].url}`
       : 'https://via.placeholder.com/200x80/1e40af/ffffff?text=PALADINO';
     
-    const receiverEmail = siteConfig?.contactos?.[0]?.contact_email_receiver || 'info@paladinopropiedades.com.ar';
-    const senderEmail = siteConfig?.contactos?.[0]?.email || 'info@paladinopropiedades.com.ar';
+    const defaultEmail = 'info@paladinopropiedades.com.ar';
+    const receiverEmail = siteConfig?.email_de_contacto || defaultEmail;
+    const senderEmail = defaultEmail;
+    const emailSubject = siteConfig?.texto_de_contacto_web || 'Nueva consulta desde la web';
 
     // Log de configuración
     console.log('Configuración ZeptoMail:');
@@ -38,6 +40,7 @@ export async function POST(request: NextRequest) {
     console.log('Mail From (config):', senderEmail);
     console.log('Mail From (env):', process.env.MAIL_FROM);
     console.log('Receiver Email (from config):', receiverEmail);
+    console.log('Email Subject (from config):', emailSubject);
     console.log('Email del usuario (reply-to):', email);
     console.log('Nombre del usuario:', nombre);
     console.log('Logo URL:', logoUrl);
@@ -62,7 +65,7 @@ export async function POST(request: NextRequest) {
           name: nombre
         }
       ],
-      subject: `Nueva consulta desde la web - ${getTipoConsulta(tipo)}`,
+      subject: emailSubject,
       htmlbody: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <!-- Header con logo -->
