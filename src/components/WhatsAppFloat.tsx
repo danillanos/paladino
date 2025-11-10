@@ -5,16 +5,21 @@ import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 export default function WhatsAppFloat() {
   const { configuration } = useSiteConfiguration();
 
-  // Obtener el número de WhatsApp del primer contacto
-  const whatsappNumber = configuration?.contactos && configuration.contactos.length > 0 
-    ? configuration.contactos[0].whatsapp 
-    : '+5493541123456'; // Fallback
+  // Obtener el número de WhatsApp desde contact_whastapp_home
+  const whatsappNumber = configuration?.contact_whastapp_home;
 
   const handleWhatsAppClick = () => {
+    if (!whatsappNumber) return;
+    
     const cleanNumber = whatsappNumber.replace(/\D/g, '');
     const whatsappUrl = `https://wa.me/${cleanNumber}`;
     window.open(whatsappUrl, '_blank');
   };
+
+  // No mostrar el botón si no hay número configurado
+  if (!whatsappNumber) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-50">

@@ -260,6 +260,7 @@ export interface SiteConfiguration {
   texto_footer: string;
   copy: string;
   Organizacion?: string | null;
+  contact_whastapp_home?: string | null;
   Logos: {
     id: number;
     Logo_1: LogoImage[];
