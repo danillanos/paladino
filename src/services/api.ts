@@ -324,7 +324,34 @@ export class ApiService {
 
       const data = await response.json();
       console.log('Successfully fetched site configuration');
-      return data;
+      
+      // Mapear campos que pueden venir con diferentes nombres
+      const mappedData: SiteConfiguration = {
+        ...data,
+        Organizacion: data.Organizacion || data.organizacion || null,
+        Facebook: data.Facebook || data.facebook || data.Facebook_url || data.facebook_url || null,
+        Zonaprop: data.Zonaprop || data.zonaprop || data.Zonaprop_url || data.zonaprop_url || null,
+        horario_de_atencion: data.horario_de_atencion || data.horario_de_atencion || data.horarios_de_atencion || data.Horario_de_atencion || null,
+      };
+      
+      // Debug: verificar campos de redes sociales
+      if (mappedData.Facebook) {
+        console.log('Facebook URL encontrada:', mappedData.Facebook);
+      } else {
+        console.log('Facebook no encontrado en:', Object.keys(data).filter(k => k.toLowerCase().includes('face')));
+      }
+      if (mappedData.Zonaprop) {
+        console.log('Zonaprop URL encontrada:', mappedData.Zonaprop);
+      } else {
+        console.log('Zonaprop no encontrado en:', Object.keys(data).filter(k => k.toLowerCase().includes('zonaprop')));
+      }
+      if (mappedData.horario_de_atencion) {
+        console.log('Horario de atención encontrado:', mappedData.horario_de_atencion);
+      } else {
+        console.log('Horario de atención no encontrado en:', Object.keys(data).filter(k => k.toLowerCase().includes('horario')));
+      }
+      
+      return mappedData;
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {

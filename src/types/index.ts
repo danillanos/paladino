@@ -258,10 +258,14 @@ export interface SiteConfiguration {
   instagram: string;
   texto_footer: string;
   copy: string;
+  horario_de_atencion?: string | null;
   Organizacion?: string | null;
   contact_whastapp_home?: string | null;
   email_de_contacto?: string | null;
   texto_de_contacto_web?: string | null;
+  Facebook?: string | null;
+  youtube?: string | null;
+  Zonaprop?: string | null;
   Logos: {
     id: number;
     Logo_1: LogoImage[];
