@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import DOMPurify from 'isomorphic-dompurify';
 import { Inmueble } from '@/types';
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
 
@@ -15,6 +16,24 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const { configuration } = useSiteConfiguration();
+
+  // Sanitizar y preparar el HTML de la descripción
+  const getSanitizedDescription = () => {
+    if (!inmueble.descripcion) return '';
+    
+    let processedContent = inmueble.descripcion;
+    
+    // Convertir saltos de línea (\n) en <br> para que se respeten en el HTML
+    processedContent = processedContent.replace(/\n/g, '<br>');
+    
+    // Sanitizar el contenido HTML
+    return DOMPurify.sanitize(processedContent, {
+      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'b', 'i', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'div', 'span', 'blockquote', 'hr'],
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'style', 'target', 'rel', 'width', 'height'],
+      ALLOW_DATA_ATTR: false,
+      KEEP_CONTENT: true
+    });
+  };
 
   // Obtener todas las imágenes disponibles
   const getAllImages = () => {
@@ -255,7 +274,10 @@ Gracias.`;
             {inmueble.descripcion && (
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Descripción</h2>
-                <p className="text-gray-700 leading-relaxed">{inmueble.descripcion}</p>
+                <div 
+                  className="text-gray-700 leading-relaxed prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: getSanitizedDescription() }}
+                />
               </div>
             )}
 
