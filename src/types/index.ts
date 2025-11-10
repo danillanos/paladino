@@ -136,7 +136,11 @@ export interface Inmueble {
     instagram: string | null;
   } | null;
   galeria_destacada: unknown[];
-  precio_ref: string | null;
+  precio_ref: {
+    moneda: {
+      nombre: string;
+    } | null;
+  } | null;
   ubicacion_avanzada: {
     id: number;
     direccion: string;

@@ -10,12 +10,31 @@ interface PropertyCardProps {
 export default function PropertyCard({ property, isDestacado = false }: PropertyCardProps) {
   const formatPrice = (price: number | null, currency: string | null) => {
     if (!price) return 'Consultar';
-    return new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: currency || 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price);
+    
+    // Mapear nombres de moneda a códigos ISO
+    const getCurrencyCode = (currencyName: string | null): string => {
+      if (!currencyName) return 'USD';
+      const normalized = currencyName.toLowerCase().trim();
+      if (normalized.includes('peso') || normalized.includes('ars')) return 'ARS';
+      if (normalized.includes('dolar') || normalized.includes('usd') || normalized.includes('dólar')) return 'USD';
+      // Si ya es un código ISO válido, devolverlo
+      if (normalized.length === 3) return normalized.toUpperCase();
+      return 'USD'; // Fallback
+    };
+    
+    const currencyCode = getCurrencyCode(currency);
+    
+    try {
+      return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price);
+    } catch (error) {
+      // Si hay error con el código de moneda, usar formato simple
+      return `$${price.toLocaleString('es-AR')} ${currencyCode}`;
+    }
   };
 
   const getImageUrl = (images: string[]) => {
@@ -48,7 +67,7 @@ export default function PropertyCard({ property, isDestacado = false }: Property
         <div className="absolute bottom-3 left-3 right-3">
           <div className="bg-white bg-opacity-95 rounded-lg p-2">
             <span className="text-lg font-bold text-green-600">
-              {formatPrice(property.precio_inmueble || property.precio, property.moneda)}
+              {formatPrice(property.precio_inmueble || property.precio, property.precio_ref?.moneda?.nombre || null)}
             </span>
           </div>
         </div>

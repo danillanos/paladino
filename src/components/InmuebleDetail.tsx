@@ -48,12 +48,31 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
 
   const formatPrice = (price: number | null, currency: string | null) => {
     if (!price) return 'Consultar precio';
-    return new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: currency || 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price);
+    
+    // Mapear nombres de moneda a códigos ISO
+    const getCurrencyCode = (currencyName: string | null): string => {
+      if (!currencyName) return 'USD';
+      const normalized = currencyName.toLowerCase().trim();
+      if (normalized.includes('peso') || normalized.includes('ars')) return 'ARS';
+      if (normalized.includes('dolar') || normalized.includes('usd') || normalized.includes('dólar')) return 'USD';
+      // Si ya es un código ISO válido, devolverlo
+      if (normalized.length === 3) return normalized.toUpperCase();
+      return 'USD'; // Fallback
+    };
+    
+    const currencyCode = getCurrencyCode(currency);
+    
+    try {
+      return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price);
+    } catch (error) {
+      // Si hay error con el código de moneda, usar formato simple
+      return `$${price.toLocaleString('es-AR')} ${currencyCode}`;
+    }
   };
 
   const getLocationText = () => {
@@ -194,7 +213,7 @@ Gracias.`;
             {/* Precio destacado */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
               <div className="text-3xl font-bold text-gray-900 mb-2">
-                {formatPrice(inmueble.precio, inmueble.moneda)}
+                {formatPrice(inmueble.precio, inmueble.precio_ref?.moneda?.nombre || null)}
               </div>
               <div className="text-gray-600">
                 {typeof inmueble.operacion === 'string' ? inmueble.operacion : inmueble.operacion?.nombre} • {inmueble.tipo_inmueble || 'Propiedad'}

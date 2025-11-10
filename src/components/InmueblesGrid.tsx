@@ -462,7 +462,7 @@ export default function InmueblesGrid({
                 {/* Price */}
                 <div className="text-lg font-bold text-gray-900 mb-2">
                   {inmueble.precio ? `$${inmueble.precio.toLocaleString()}` : 'Consultar precio'}
-                  {inmueble.moneda && <span className="text-sm text-gray-600 ml-1">{inmueble.moneda}</span>}
+                  {inmueble.precio_ref?.moneda?.nombre && <span className="text-sm text-gray-600 ml-1">{inmueble.precio_ref.moneda.nombre}</span>}
                 </div>
                 
                 {/* Description */}
