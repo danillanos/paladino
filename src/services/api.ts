@@ -545,7 +545,7 @@ export class ApiService {
         reglas_economicas: null,
         contacto: null,
         galeria_destacada: [],
-        precio_ref: '85000',
+        precio_ref: { moneda: { nombre: 'USD' } },
         ubicacion_avanzada: null,
         imagen: { url: 'https://picsum.photos/400/300?random=1' }
       },
@@ -598,7 +598,7 @@ export class ApiService {
         reglas_economicas: null,
         contacto: null,
         galeria_destacada: [],
-        precio_ref: '180000',
+        precio_ref: { moneda: { nombre: 'USD' } },
         ubicacion_avanzada: null,
         imagen: { url: 'https://picsum.photos/400/300?random=2' }
       },
@@ -651,7 +651,7 @@ export class ApiService {
         reglas_economicas: null,
         contacto: null,
         galeria_destacada: [],
-        precio_ref: '120000',
+        precio_ref: { moneda: { nombre: 'USD' } },
         ubicacion_avanzada: null,
         imagen: { url: 'https://picsum.photos/400/300?random=3' }
       },
@@ -704,7 +704,7 @@ export class ApiService {
         reglas_economicas: null,
         contacto: null,
         galeria_destacada: [],
-        precio_ref: '220000',
+        precio_ref: { moneda: { nombre: 'USD' } },
         ubicacion_avanzada: null,
         imagen: { url: 'https://picsum.photos/400/300?random=4' }
       },
@@ -757,7 +757,7 @@ export class ApiService {
         reglas_economicas: null,
         contacto: null,
         galeria_destacada: [],
-        precio_ref: '350000',
+        precio_ref: { moneda: { nombre: 'USD' } },
         ubicacion_avanzada: null,
         imagen: { url: 'https://picsum.photos/400/300?random=5' }
       },
@@ -810,7 +810,7 @@ export class ApiService {
         reglas_economicas: null,
         contacto: null,
         galeria_destacada: [],
-        precio_ref: '65000',
+        precio_ref: { moneda: { nombre: 'USD' } },
         ubicacion_avanzada: null,
         imagen: { url: 'https://picsum.photos/400/300?random=6' }
       }

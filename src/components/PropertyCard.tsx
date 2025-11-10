@@ -31,7 +31,7 @@ export default function PropertyCard({ property, isDestacado = false }: Property
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       }).format(price);
-    } catch (error) {
+    } catch {
       // Si hay error con el código de moneda, usar formato simple
       return `$${price.toLocaleString('es-AR')} ${currencyCode}`;
     }

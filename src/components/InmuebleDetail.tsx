@@ -69,7 +69,7 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       }).format(price);
-    } catch (error) {
+    } catch {
       // Si hay error con el código de moneda, usar formato simple
       return `$${price.toLocaleString('es-AR')} ${currencyCode}`;
     }
