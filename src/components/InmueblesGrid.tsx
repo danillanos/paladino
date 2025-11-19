@@ -26,6 +26,7 @@ export default function InmueblesGrid({
 }: InmueblesGridProps) {
   const [inmuebles, setInmuebles] = useState<Inmueble[]>([]);
   const [loading, setLoading] = useState(true);
+  const [localSearchValue, setLocalSearchValue] = useState('');
   const searchParams = useSearchParams();
 
   // Función para mapear parámetros de URL a valores de base de datos
@@ -184,6 +185,32 @@ export default function InmueblesGrid({
 
   const activeFilters = getActiveFilters();
 
+  // Inicializar el valor local del campo de búsqueda cuando cambian los parámetros de URL
+  useEffect(() => {
+    setLocalSearchValue(activeFilters.search);
+  }, [activeFilters.search]);
+
+  // Función para aplicar el filtro de búsqueda
+  const applySearchFilter = () => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    
+    if (localSearchValue.trim() === '') {
+      newParams.delete('search');
+    } else {
+      newParams.set('search', localSearchValue.trim());
+    }
+    
+    const queryString = newParams.toString();
+    window.location.href = `/inmuebles${queryString ? `?${queryString}` : ''}`;
+  };
+
+  // Función para manejar Enter en el campo de búsqueda
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      applySearchFilter();
+    }
+  };
+
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4">
@@ -213,11 +240,15 @@ export default function InmueblesGrid({
               <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+                  <button
+                    onClick={applySearchFilter}
+                    className="p-2 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors cursor-pointer"
+                    title="Aplicar filtros de búsqueda"
+                  >
                     <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
                     </svg>
-                  </div>
+                  </button>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h3>
                     <p className="text-sm text-gray-500">Refina tu búsqueda de propiedades</p>
@@ -239,8 +270,9 @@ export default function InmueblesGrid({
                   </label>
                   <input
                     type="text"
-                    value={activeFilters.search}
-                    onChange={(e) => updateFilters('search', e.target.value)}
+                    value={localSearchValue}
+                    onChange={(e) => setLocalSearchValue(e.target.value)}
+                    onKeyPress={handleSearchKeyPress}
                     placeholder="Buscar por nombre, zona..."
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   />
@@ -323,11 +355,15 @@ export default function InmueblesGrid({
             <div className="bg-white border border-gray-200 rounded-xl p-6 max-w-4xl mx-auto shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
+                <button
+                  onClick={applySearchFilter}
+                  className="p-2 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors cursor-pointer"
+                  title="Aplicar filtros de búsqueda"
+                >
                   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
                   </svg>
-                </div>
+                </button>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h3>
                   <p className="text-sm text-gray-500">Refina tu búsqueda de propiedades</p>
@@ -349,8 +385,9 @@ export default function InmueblesGrid({
                 </label>
                 <input
                   type="text"
-                  value={activeFilters.search}
-                  onChange={(e) => updateFilters('search', e.target.value)}
+                  value={localSearchValue}
+                  onChange={(e) => setLocalSearchValue(e.target.value)}
+                  onKeyPress={handleSearchKeyPress}
                   placeholder="Buscar por nombre, zona..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 />
