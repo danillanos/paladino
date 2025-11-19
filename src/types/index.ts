@@ -409,6 +409,7 @@ export interface Emprendimiento {
   secciones: (EmprendimientoDescripcion | EmprendimientoAmenities | EmprendimientoPrecio)[];
   cover: EmprendimientoImagen;
   galeria: EmprendimientoImagen[];
+  youtube_video?: string | null;
 }
 
 export interface ObraImagen {

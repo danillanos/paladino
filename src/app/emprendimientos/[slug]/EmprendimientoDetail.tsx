@@ -14,6 +14,7 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
   const [selectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'fotos' | 'videos'>('fotos');
   const { configuration } = useSiteConfiguration();
 
   // Obtener todas las imágenes disponibles
@@ -51,6 +52,53 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
 
   const images = getAllImages();
   const currentImage = images[selectedImageIndex];
+
+  // Función para parsear el iframe y extraer el src, agregando rel=0 para ocultar videos relacionados
+  const parseYouTubeIframe = (iframeString: string | null | undefined): string | null => {
+    if (!iframeString) return null;
+    
+    let videoUrl: string | null = null;
+    
+    // Buscar el atributo src en el iframe
+    const srcMatch = iframeString.match(/src=["']([^"']+)["']/);
+    if (srcMatch && srcMatch[1]) {
+      videoUrl = srcMatch[1];
+    } else {
+      // Si no se encuentra src, intentar extraer la URL directamente
+      const urlMatch = iframeString.match(/https?:\/\/[^\s"']+/);
+      if (urlMatch) {
+        videoUrl = urlMatch[0];
+      }
+    }
+    
+    if (!videoUrl) return null;
+    
+    // Agregar o reemplazar el parámetro rel=0
+    try {
+      const url = new URL(videoUrl);
+      // Establecer rel=0 para ocultar videos relacionados
+      url.searchParams.set('rel', '0');
+      return url.toString();
+    } catch {
+      // Si la URL no es válida, intentar agregar el parámetro manualmente
+      if (videoUrl.includes('?')) {
+        // Ya tiene parámetros, agregar o reemplazar rel=0
+        if (videoUrl.includes('rel=')) {
+          return videoUrl.replace(/rel=\d+/g, 'rel=0');
+        } else {
+          return `${videoUrl}&rel=0`;
+        }
+      } else {
+        // No tiene parámetros, agregar ?rel=0
+        return `${videoUrl}?rel=0`;
+      }
+    }
+  };
+
+  // Buscar el campo youtube_video en diferentes variantes (mayúsculas/minúsculas)
+  const youtubeVideoField = (emprendimiento as any).Youtube_video || (emprendimiento as any).youtube_video || emprendimiento.youtube_video;
+  const youtubeVideoSrc = parseYouTubeIframe(youtubeVideoField);
+  const hasVideos = !!youtubeVideoSrc;
 
   // Funciones para manejar el modal
   const openModal = (index: number) => {
@@ -173,22 +221,80 @@ Gracias.`;
               </div> */}
             </div>
             
-            {/* Columna derecha - Imagen */}
+            {/* Columna derecha - Imagen / Video con tabs */}
             <div className="relative">
-              {currentImage ? (
-                <div className="relative h-[500px] rounded-lg overflow-hidden shadow-lg">
-                  <Image
-                    src={currentImage.url}
-                    alt={currentImage.alt}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+              {/* Tabs */}
+              {(images.length > 0 || hasVideos) && (
+                <div className="mb-4 border-b border-gray-200">
+                  <div className="flex space-x-1">
+                    {images.length > 0 && (
+                      <button
+                        onClick={() => setActiveTab('fotos')}
+                        className={`px-6 py-3 text-sm font-medium transition-colors ${
+                          activeTab === 'fotos'
+                            ? 'text-green-600 border-b-2 border-green-600'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        Fotos
+                      </button>
+                    )}
+                    {hasVideos && (
+                      <button
+                        onClick={() => setActiveTab('videos')}
+                        className={`px-6 py-3 text-sm font-medium transition-colors ${
+                          activeTab === 'videos'
+                            ? 'text-green-600 border-b-2 border-green-600'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        Videos
+                      </button>
+                    )}
+                  </div>
                 </div>
-              ) : (
-                <div className="h-[500px] bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-lg">Sin imagen disponible</span>
-                </div>
+              )}
+
+              {/* Contenido de Fotos */}
+              {activeTab === 'fotos' && (
+                <>
+                  {currentImage ? (
+                    <div className="relative h-[500px] rounded-lg overflow-hidden shadow-lg">
+                      <Image
+                        src={currentImage.url}
+                        alt={currentImage.alt}
+                        fill
+                        className="object-cover"
+                        priority
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-[500px] bg-gray-200 rounded-lg flex items-center justify-center">
+                      <span className="text-gray-500 text-lg">Sin imagen disponible</span>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* Contenido de Videos */}
+              {activeTab === 'videos' && (
+                <>
+                  {youtubeVideoSrc ? (
+                    <div className="relative h-[500px] rounded-lg overflow-hidden shadow-lg bg-black">
+                      <iframe
+                        src={youtubeVideoSrc}
+                        title={`Video de ${emprendimiento.nombre}`}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-[500px] bg-gray-200 rounded-lg flex items-center justify-center">
+                      <span className="text-gray-500 text-lg">Sin video disponible</span>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

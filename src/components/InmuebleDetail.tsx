@@ -108,7 +108,9 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
     }
   };
 
-  const youtubeVideoSrc = parseYouTubeIframe(inmueble.youtube_video);
+  // Buscar el campo youtube_video en diferentes variantes (mayúsculas/minúsculas)
+  const youtubeVideoField = (inmueble as any).Youtube_video || (inmueble as any).youtube_video || inmueble.youtube_video;
+  const youtubeVideoSrc = parseYouTubeIframe(youtubeVideoField);
   const hasVideos = !!youtubeVideoSrc;
 
   const formatPrice = (price: number | null, currency: string | null) => {
