@@ -109,7 +109,8 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
   };
 
   // Buscar el campo youtube_video en diferentes variantes (mayúsculas/minúsculas)
-  const youtubeVideoField = (inmueble as any).Youtube_video || (inmueble as any).youtube_video || inmueble.youtube_video;
+  const inmuebleWithVideo = inmueble as Inmueble & { Youtube_video?: string | null };
+  const youtubeVideoField = inmuebleWithVideo.Youtube_video || inmueble.youtube_video;
   const youtubeVideoSrc = parseYouTubeIframe(youtubeVideoField);
   const hasVideos = !!youtubeVideoSrc;
 

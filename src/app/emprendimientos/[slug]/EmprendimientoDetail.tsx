@@ -96,7 +96,8 @@ export default function EmprendimientoDetail({ emprendimiento }: EmprendimientoD
   };
 
   // Buscar el campo youtube_video en diferentes variantes (mayúsculas/minúsculas)
-  const youtubeVideoField = (emprendimiento as any).Youtube_video || (emprendimiento as any).youtube_video || emprendimiento.youtube_video;
+  const emprendimientoWithVideo = emprendimiento as Emprendimiento & { Youtube_video?: string | null };
+  const youtubeVideoField = emprendimientoWithVideo.Youtube_video || emprendimiento.youtube_video;
   const youtubeVideoSrc = parseYouTubeIframe(youtubeVideoField);
   const hasVideos = !!youtubeVideoSrc;
 
