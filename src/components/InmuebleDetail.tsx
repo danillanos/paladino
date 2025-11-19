@@ -15,6 +15,7 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<'fotos' | 'videos'>('fotos');
   const { configuration } = useSiteConfiguration();
 
   // Sanitizar y preparar el HTML de la descripción
@@ -64,6 +65,51 @@ export default function InmuebleDetail({ inmueble }: InmuebleDetailProps) {
 
   const images = getAllImages();
   const currentImage = images[selectedImageIndex] || '/placeholder-property.jpg';
+
+  // Función para parsear el iframe y extraer el src, agregando rel=0 para ocultar videos relacionados
+  const parseYouTubeIframe = (iframeString: string | null | undefined): string | null => {
+    if (!iframeString) return null;
+    
+    let videoUrl: string | null = null;
+    
+    // Buscar el atributo src en el iframe
+    const srcMatch = iframeString.match(/src=["']([^"']+)["']/);
+    if (srcMatch && srcMatch[1]) {
+      videoUrl = srcMatch[1];
+    } else {
+      // Si no se encuentra src, intentar extraer la URL directamente
+      const urlMatch = iframeString.match(/https?:\/\/[^\s"']+/);
+      if (urlMatch) {
+        videoUrl = urlMatch[0];
+      }
+    }
+    
+    if (!videoUrl) return null;
+    
+    // Agregar o reemplazar el parámetro rel=0
+    try {
+      const url = new URL(videoUrl);
+      // Establecer rel=0 para ocultar videos relacionados
+      url.searchParams.set('rel', '0');
+      return url.toString();
+    } catch {
+      // Si la URL no es válida, intentar agregar el parámetro manualmente
+      if (videoUrl.includes('?')) {
+        // Ya tiene parámetros, agregar o reemplazar rel=0
+        if (videoUrl.includes('rel=')) {
+          return videoUrl.replace(/rel=\d+/g, 'rel=0');
+        } else {
+          return `${videoUrl}&rel=0`;
+        }
+      } else {
+        // No tiene parámetros, agregar ?rel=0
+        return `${videoUrl}?rel=0`;
+      }
+    }
+  };
+
+  const youtubeVideoSrc = parseYouTubeIframe(inmueble.youtube_video);
+  const hasVideos = !!youtubeVideoSrc;
 
   const formatPrice = (price: number | null, currency: string | null) => {
     if (!price) return 'Consultar precio';
@@ -147,81 +193,139 @@ Gracias.`;
         </div>
       </div>
 
-      {/* Imagen principal */}
+      {/* Imagen principal / Video con tabs */}
       <div className="bg-white">
         <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="relative">
-            {images.length > 0 ? (
-              <div className="relative aspect-video rounded-lg overflow-hidden">
-                <Image
-                  src={currentImage}
-                  alt={inmueble.nombre}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                
-                {/* Contador de imágenes */}
-                {images.length > 1 && (
-                  <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                    {selectedImageIndex + 1} / {images.length}
-                  </div>
-                )}
-
-                {/* Controles de navegación */}
-                {images.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => setSelectedImageIndex(prev => prev > 0 ? prev - 1 : images.length - 1)}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-                    >
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => setSelectedImageIndex(prev => prev < images.length - 1 ? prev + 1 : 0)}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-                    >
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div className="aspect-video bg-gray-300 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500 text-lg">Sin imagen</span>
-              </div>
-            )}
-          </div>
-
-          {/* Thumbnails */}
-          {images.length > 1 && (
-            <div className="mt-4">
-              <div className="flex space-x-2 overflow-x-auto pb-2">
-                {images.map((image, index) => (
+          {/* Tabs */}
+          {(images.length > 0 || hasVideos) && (
+            <div className="mb-4 border-b border-gray-200">
+              <div className="flex space-x-1">
+                {images.length > 0 && (
                   <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      index === selectedImageIndex 
-                        ? 'border-green-600 ring-2 ring-green-200' 
-                        : 'border-gray-200 hover:border-gray-300'
+                    onClick={() => setActiveTab('fotos')}
+                    className={`px-6 py-3 text-sm font-medium transition-colors ${
+                      activeTab === 'fotos'
+                        ? 'text-green-600 border-b-2 border-green-600'
+                        : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    <Image
-                      src={image}
-                      alt={`${inmueble.nombre} - Imagen ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
+                    Fotos
                   </button>
-                ))}
+                )}
+                {hasVideos && (
+                  <button
+                    onClick={() => setActiveTab('videos')}
+                    className={`px-6 py-3 text-sm font-medium transition-colors ${
+                      activeTab === 'videos'
+                        ? 'text-green-600 border-b-2 border-green-600'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Videos
+                  </button>
+                )}
               </div>
             </div>
           )}
+
+          <div className="relative">
+            {/* Contenido de Fotos */}
+            {activeTab === 'fotos' && (
+              <>
+                {images.length > 0 ? (
+                  <div className="relative aspect-video rounded-lg overflow-hidden">
+                    <Image
+                      src={currentImage}
+                      alt={inmueble.nombre}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    
+                    {/* Contador de imágenes */}
+                    {images.length > 1 && (
+                      <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                        {selectedImageIndex + 1} / {images.length}
+                      </div>
+                    )}
+
+                    {/* Controles de navegación */}
+                    {images.length > 1 && (
+                      <>
+                        <button
+                          onClick={() => setSelectedImageIndex(prev => prev > 0 ? prev - 1 : images.length - 1)}
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                        >
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => setSelectedImageIndex(prev => prev < images.length - 1 ? prev + 1 : 0)}
+                          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                        >
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <div className="aspect-video bg-gray-300 rounded-lg flex items-center justify-center">
+                    <span className="text-gray-500 text-lg">Sin imagen</span>
+                  </div>
+                )}
+
+                {/* Thumbnails */}
+                {images.length > 1 && (
+                  <div className="mt-4">
+                    <div className="flex space-x-2 overflow-x-auto pb-2">
+                      {images.map((image, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedImageIndex(index)}
+                          className={`relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                            index === selectedImageIndex 
+                              ? 'border-green-600 ring-2 ring-green-200' 
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <Image
+                            src={image}
+                            alt={`${inmueble.nombre} - Imagen ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Contenido de Videos */}
+            {activeTab === 'videos' && (
+              <>
+                {youtubeVideoSrc ? (
+                  <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
+                    <iframe
+                      src={youtubeVideoSrc}
+                      title={`Video de ${inmueble.nombre}`}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video bg-gray-300 rounded-lg flex items-center justify-center">
+                    <span className="text-gray-500 text-lg">Sin video disponible</span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 

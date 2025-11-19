@@ -154,6 +154,7 @@ export interface Inmueble {
   imagen: {
     url: string;
   } | null;
+  youtube_video?: string | null;
 }
 
 export interface Destacado {
