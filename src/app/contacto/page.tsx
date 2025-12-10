@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSiteConfiguration } from '@/hooks/useSiteConfiguration';
+import MathCaptcha from '@/components/MathCaptcha';
 
 function ContactoContent() {
   const { configuration, loading: configLoading } = useSiteConfiguration();
@@ -17,6 +18,9 @@ function ContactoContent() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [captchaValid, setCaptchaValid] = useState(false);
+  const [captchaData, setCaptchaData] = useState<{ num1: number; num2: number; answer: number } | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   // Pre-llenar el mensaje si viene desde un inmueble
   useEffect(() => {
@@ -38,6 +42,13 @@ function ContactoContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validar captcha antes de enviar
+    if (!captchaValid || !captchaData) {
+      setError('Por favor, completa la verificación de seguridad correctamente');
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -48,7 +59,14 @@ function ContactoContent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          captcha: {
+            num1: captchaData.num1,
+            num2: captchaData.num2,
+            answer: captchaData.answer
+          }
+        }),
       });
 
       const data = await response.json();
@@ -66,6 +84,9 @@ function ContactoContent() {
         mensaje: '',
         tipo: 'consulta'
       });
+      setCaptchaValid(false);
+      setCaptchaData(null);
+      setCaptchaReset(prev => prev + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al enviar el mensaje');
     } finally {
@@ -176,9 +197,22 @@ function ContactoContent() {
                     />
                   </div>
                   
+                  <MathCaptcha
+                    onVerify={(isValid) => {
+                      setCaptchaValid(isValid);
+                      if (!isValid) {
+                        setCaptchaData(null);
+                      }
+                    }}
+                    resetTrigger={captchaReset}
+                    onCaptchaData={(data) => {
+                      setCaptchaData(data);
+                    }}
+                  />
+                  
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !captchaValid}
                     className="w-full bg-slate-600 text-white py-3 px-6 rounded-md hover:bg-slate-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Enviando...' : 'Enviar mensaje'}

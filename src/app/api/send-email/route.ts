@@ -4,12 +4,28 @@ import { ApiService } from '@/services/api';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { nombre, email, telefono, mensaje, tipo } = body;
+    const { nombre, email, telefono, mensaje, tipo, captcha } = body;
 
     // Validar campos requeridos
     if (!nombre || !email || !mensaje) {
       return NextResponse.json(
         { error: 'Faltan campos requeridos' },
+        { status: 400 }
+      );
+    }
+
+    // Validar captcha
+    if (!captcha || typeof captcha.num1 !== 'number' || typeof captcha.num2 !== 'number' || typeof captcha.answer !== 'number') {
+      return NextResponse.json(
+        { error: 'Verificación de seguridad requerida' },
+        { status: 400 }
+      );
+    }
+
+    const correctAnswer = captcha.num1 + captcha.num2;
+    if (captcha.answer !== correctAnswer) {
+      return NextResponse.json(
+        { error: 'La verificación de seguridad es incorrecta. Por favor, inténtalo de nuevo.' },
         { status: 400 }
       );
     }
