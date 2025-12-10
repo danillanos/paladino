@@ -14,13 +14,32 @@ npm run build
 
 echo "🔄 Recargando aplicación con PM2..."
 if command -v pm2 &> /dev/null; then
-    pm2 reload paladino
-    echo "✅ Aplicación recargada con PM2"
+    # Verificar si el proceso existe
+    if pm2 list | grep -q "paladino"; then
+        pm2 reload paladino
+        echo "✅ Aplicación recargada con PM2"
+    else
+        echo "⚠️  Proceso no encontrado. Iniciando aplicación con PM2..."
+        if [ -f "ecosystem.config.cjs" ]; then
+            pm2 start ecosystem.config.cjs
+        elif [ -f "ecosystem.config.js" ]; then
+            pm2 start ecosystem.config.js
+        else
+            pm2 start npm --name "paladino" -- start
+        fi
+        echo "✅ Aplicación iniciada con PM2"
+    fi
 else
     echo "⚠️  PM2 no está instalado. Instalando PM2 globalmente..."
     npm install -g pm2
     echo "🔄 Iniciando aplicación con PM2..."
-    pm2 start npm --name "paladino" -- start
+    if [ -f "ecosystem.config.cjs" ]; then
+        pm2 start ecosystem.config.cjs
+    elif [ -f "ecosystem.config.js" ]; then
+        pm2 start ecosystem.config.js
+    else
+        pm2 start npm --name "paladino" -- start
+    fi
     echo "✅ Aplicación iniciada con PM2"
 fi
 
